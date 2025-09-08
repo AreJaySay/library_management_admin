@@ -10,7 +10,6 @@ import 'package:library_book/screens/widgets/shimmer_loader/table.dart';
 import 'package:library_book/services/apis/users.dart';
 import 'package:library_book/services/routes.dart';
 import 'package:library_book/utils/palettes/app_colors.dart' hide Colors;
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Users extends StatefulWidget {
   @override
@@ -22,18 +21,6 @@ class _UsersState extends State<Users> {
   final UsersApi _usersApi = new UsersApi();
   final _scrollController = ScrollController();
   List? _toSearch;
-
-  Future _deleteBook(String data)async{
-    try {
-      // FirebaseFirestore firestore = FirebaseFirestore.instance;
-      // CollectionReference collectionRef = firestore.collection("users");
-      // DocumentReference docRef = collectionRef.doc(data);
-      // await docRef.delete();
-      // print('Document with ID $data deleted successfully from books.');
-    } catch (e) {
-      print('Error deleting document: $e');
-    }
-  }
 
   @override
   void initState() {
@@ -53,13 +40,11 @@ class _UsersState extends State<Users> {
             shadowColor: Colors.grey.shade200,
             centerTitle: false,
             backgroundColor: Colors.white,
-            flexibleSpace: Appbar(title: "STUDENTS", color: colors.umber, toggleColor: Colors.transparent, onchange: (text){
+            flexibleSpace: Appbar(title: "STUDENTS", color: colors.umber, toggleColor: Colors.transparent, onchange: (text) {
               setState(() {
                 // _students = _toSearch!.where((s) => s["name"].toString().toLowerCase().contains(text.toLowerCase())).toList();
               });
-            }, onAdd: (){
-
-            },)
+            }, onAdd: (){}),
           ),
           backgroundColor: Colors.white,
           body: !snapshot.hasData ?
@@ -137,8 +122,6 @@ class _UsersState extends State<Users> {
                                 ],
                                 onChanged: (value) {
                                   MenuItems.onChanged(context, value! as MenuItem);
-                                  print(snapshot.data![x]["email"]);
-                                  if(value.text == "Edit"){
                                     showDialog<void>(
                                         context: context,
                                         builder: (context) => AlertDialog(
@@ -149,9 +132,6 @@ class _UsersState extends State<Users> {
                                             content: EditUserModal(details: snapshot.data![x],)
                                         )
                                     );
-                                  }else{
-                                    _deleteBook(snapshot.data![x]["email"]);
-                                  }
                                 },
                                 dropdownStyleData: DropdownStyleData(
                                   width: 160,

@@ -9,7 +9,7 @@
     },
     {
       "name": "another_flushbar",
-      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/another_flushbar-1.12.30",
+      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/another_flushbar-1.12.31",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -135,19 +135,19 @@
     },
     {
       "name": "firebase_database",
-      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/firebase_database-12.0.0",
+      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/firebase_database-12.0.1",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
       "name": "firebase_database_platform_interface",
-      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/firebase_database_platform_interface-0.2.6+11",
+      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/firebase_database_platform_interface-0.2.6+12",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
       "name": "firebase_database_web",
-      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/firebase_database_web-0.2.6+17",
+      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/firebase_database_web-0.2.6+18",
       "packageUri": "lib/",
       "languageVersion": "3.4"
     },
@@ -333,9 +333,9 @@
     },
     {
       "name": "shared_preferences_android",
-      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/shared_preferences_android-2.4.11",
+      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/shared_preferences_android-2.4.12",
       "packageUri": "lib/",
-      "languageVersion": "3.6"
+      "languageVersion": "3.7"
     },
     {
       "name": "shared_preferences_foundation",

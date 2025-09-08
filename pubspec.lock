@@ -13,10 +13,10 @@ packages:
     dependency: "direct main"
     description:
       name: another_flushbar
-      sha256: "19bf9520230ec40b300aaf9dd2a8fefcb277b25ecd1c4838f530566965befc2a"
+      sha256: "8da5c704245d75e346b4c5cb06c40cd808474469d728ab982cfbb80c2da69d52"
       url: "https://pub.dev"
     source: hosted
-    version: "1.12.30"
+    version: "1.12.31"
   another_xlider:
     dependency: "direct main"
     description:
@@ -181,26 +181,26 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_database
-      sha256: "4d8eb973f46af4dd481e89fec4f431805ff7415c8bf45ac895a302594c94506e"
+      sha256: adc9e1c79528e9ee9c8503b2f0c7344e90d79a0f4853cde93a2a5ee8a4f5d35a
       url: "https://pub.dev"
     source: hosted
-    version: "12.0.0"
+    version: "12.0.1"
   firebase_database_platform_interface:
     dependency: "direct main"
     description:
       name: firebase_database_platform_interface
-      sha256: "4f06fec2f58e6a33554c1509d63773c71b41ea3237643f17e72f7036d91f9f04"
+      sha256: "2ef66d5fa062a6999a93e2a6428684b51c99aec726e7a57a1cee8db46fb451d3"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.6+11"
+    version: "0.2.6+12"
   firebase_database_web:
     dependency: transitive
     description:
       name: firebase_database_web
-      sha256: faf6c2059b014d60ab574c1ce5afedc708ccb6bdad4d991c313c0705bba59c56
+      sha256: "40564fd2ef33bf3bdb93e098c017af694620cc0126a567b183414bc6aeee5186"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.6+17"
+    version: "0.2.6+18"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -433,10 +433,10 @@ packages:
     dependency: transitive
     description:
       name: shared_preferences_android
-      sha256: "5bcf0772a761b04f8c6bf814721713de6f3e5d9d89caf8d3fe031b02a342379e"
+      sha256: a2608114b1ffdcbc9c120eb71a0e207c71da56202852d4aab8a5e30a82269e74
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.11"
+    version: "2.4.12"
   shared_preferences_foundation:
     dependency: transitive
     description:
@@ -564,4 +564,4 @@ packages:
     version: "1.1.0"
 sdks:
   dart: ">=3.8.1 <4.0.0"
-  flutter: ">=3.27.0"
+  flutter: ">=3.29.0"
