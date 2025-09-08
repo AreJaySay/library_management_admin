@@ -108,7 +108,7 @@ class _BorrowerState extends State<Borrower> {
                           TableCell(child: Center(child: Text('${snapshot.data![x]["borrower"]["department"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
                           TableCell(child: Center(child: Text('${snapshot.data![x]["borrower"]["year"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
                           TableCell(child: Center(child: Text('${snapshot.data![x]["borrower"]["section"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                          TableCell(child: Center(child: Text('${snapshot.data![x]["book_information"]["title"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                          TableCell(child: Center(child: Text('${snapshot.data![x]["book_information"]["title"]}',style: TextStyle(fontFamily: "Roboto_normal",),textAlign: TextAlign.center,maxLines: 3,))),
                           TableCell(child: Center(child: Text('${snapshot.data![x]["borrow_details"]["borrow_date"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
                           TableCell(child: Center(child: Text('${snapshot.data![x]["borrow_details"]["end_date"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
                           TableCell(child: Center(child: Text('Pending',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
