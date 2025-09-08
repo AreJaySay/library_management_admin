@@ -94,18 +94,18 @@ class _BorrowerState extends State<Borrower> {
                     children: <Widget>[
                       TableCell(child: Padding(
                         padding: EdgeInsetsGeometry.symmetric(vertical: 10),
-                        child: Center(child: Text('${_logbooks![x]["id"]}',style: TextStyle(fontFamily: "Roboto_normal"))),
+                        child: Center(child: Text('${_logbooks![x]["id"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,)),
                       )),
-                      TableCell(child: Center(child: Text('${_logbooks![x]["name"]}',style: TextStyle(fontFamily: "Roboto_normal")))),
-                      TableCell(child: Center(child: Text('${_logbooks![x]["age"]}',style: TextStyle(fontFamily: "Roboto_normal")))),
-                      TableCell(child: Center(child: Text('${_logbooks![x]["school_id"]}',style: TextStyle(fontFamily: "Roboto_normal")))),
-                      TableCell(child: Center(child: Text('${_logbooks![x]["department"]}',style: TextStyle(fontFamily: "Roboto_normal")))),
-                      TableCell(child: Center(child: Text('${_logbooks![x]["year"]}',style: TextStyle(fontFamily: "Roboto_normal")))),
-                      TableCell(child: Center(child: Text('${_logbooks![x]["section"]}',style: TextStyle(fontFamily: "Roboto_normal")))),
-                      TableCell(child: Center(child: Text('${_logbooks![x]["book_title"]}',style: TextStyle(fontFamily: "Roboto_normal")))),
-                      TableCell(child: Center(child: Text('${_logbooks![x]["borrow_date"]}',style: TextStyle(fontFamily: "Roboto_normal")))),
-                      TableCell(child: Center(child: Text('${_logbooks![x]["return_date"]}',style: TextStyle(fontFamily: "Roboto_normal")))),
-                      TableCell(child: Center(child: Text('${_logbooks![x]["status"]}',style: TextStyle(fontFamily: "Roboto_normal")))),
+                      TableCell(child: Center(child: Text('${_logbooks![x]["name"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                      TableCell(child: Center(child: Text('${_logbooks![x]["age"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                      TableCell(child: Center(child: Text('${_logbooks![x]["school_id"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                      TableCell(child: Center(child: Text('${_logbooks![x]["department"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                      TableCell(child: Center(child: Text('${_logbooks![x]["year"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                      TableCell(child: Center(child: Text('${_logbooks![x]["section"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                      TableCell(child: Center(child: Text('${_logbooks![x]["book_title"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                      TableCell(child: Center(child: Text('${_logbooks![x]["borrow_date"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                      TableCell(child: Center(child: Text('${_logbooks![x]["return_date"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                      TableCell(child: Center(child: Text('${_logbooks![x]["status"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
                       TableCell(child: Center(child: DropdownButtonHideUnderline(
                         child: DropdownButton2(
                           customButton: Icon(

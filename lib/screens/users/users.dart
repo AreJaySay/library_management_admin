@@ -100,12 +100,12 @@ class _UsersState extends State<Users> {
                             TableCell(child: Center(child: CircleAvatar(
                               backgroundImage: NetworkImage(snapshot.data![x]["profile"] == "" ? "https://cdn-icons-png.freepik.com/512/8742/8742495.png" : "${snapshot.data![x]["profile"]}")
                             ))),
-                            TableCell(child: Center(child: Text('${snapshot.data![x]["name"]}',style: TextStyle(fontFamily: "Roboto_normal")))),
-                            TableCell(child: Center(child: Text('${snapshot.data![x]["age"]}',style: TextStyle(fontFamily: "Roboto_normal")))),
-                            TableCell(child: Center(child: Text('${snapshot.data![x]["school_id"]}',style: TextStyle(fontFamily: "Roboto_normal")))),
-                            TableCell(child: Center(child: Text('${snapshot.data![x]["department"]}',style: TextStyle(fontFamily: "Roboto_normal")))),
-                            TableCell(child: Center(child: Text('${snapshot.data![x]["year"]}',style: TextStyle(fontFamily: "Roboto_normal")))),
-                            TableCell(child: Center(child: Text('${snapshot.data![x]["section"]}',style: TextStyle(fontFamily: "Roboto_normal")))),
+                            TableCell(child: Center(child: Text('${snapshot.data![x]["name"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                            TableCell(child: Center(child: Text('${snapshot.data![x]["age"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                            TableCell(child: Center(child: Text('${snapshot.data![x]["school_id"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                            TableCell(child: Center(child: Text('${snapshot.data![x]["department"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                            TableCell(child: Center(child: Text('${snapshot.data![x]["year"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                            TableCell(child: Center(child: Text('${snapshot.data![x]["section"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
                             TableCell(child: Center(child: DropdownButtonHideUnderline(
                               child: DropdownButton2(
                                 customButton: Icon(

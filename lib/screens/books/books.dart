@@ -133,7 +133,7 @@ class _BooksState extends State<Books> {
                             children: <Widget>[
                               TableCell(child: Padding(
                                 padding: EdgeInsetsGeometry.symmetric(vertical: 10),
-                                child: Center(child: Text('${x+1}',style: TextStyle(fontFamily: "Roboto_normal"))),
+                                child: Center(child: Text('${x+1}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,)),
                               )),
                               TableCell(child: Center(
                                 child: Image(
@@ -144,14 +144,14 @@ class _BooksState extends State<Books> {
                                 ),
                               ),
                               ),
-                              TableCell(child: Center(child: Text('${snapshot.data![x]["isbn"]}',style: TextStyle(fontFamily: "Roboto_normal")))),
-                              TableCell(child: Center(child: Text('${snapshot.data![x]["title"]}',style: TextStyle(fontFamily: "Roboto_normal")))),
+                              TableCell(child: Center(child: Text('${snapshot.data![x]["isbn"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                              TableCell(child: Center(child: Text('${snapshot.data![x]["title"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
                               TableCell(child: Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                                child: Center(child: Text('${snapshot.data![x]["summary"]}',style: TextStyle(fontFamily: "Roboto_normal"),maxLines: 3,overflow: TextOverflow.ellipsis,)),
+                                child: Center(child: Text('${snapshot.data![x]["summary"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,maxLines: 3,overflow: TextOverflow.ellipsis,)),
                               )),
-                              TableCell(child: Center(child: Text('${snapshot.data![x]["author"]}',style: TextStyle(fontFamily: "Roboto_normal")))),
-                              TableCell(child: Center(child: Text('${snapshot.data![x]["stock"]}',style: TextStyle(fontFamily: "Roboto_normal")))),
+                              TableCell(child: Center(child: Text('${snapshot.data![x]["author"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                              TableCell(child: Center(child: Text('${snapshot.data![x]["stock"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
                               TableCell(child: Center(child: DropdownButtonHideUnderline(
                                 child: DropdownButton2(
                                   customButton: Icon(
