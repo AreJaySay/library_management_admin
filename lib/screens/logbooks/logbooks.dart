@@ -50,7 +50,9 @@ class _LogBooksState extends State<LogBooks> {
               setState(() {
                 _logbooks = _toSearch!.where((s) => s["name"].toString().toLowerCase().contains(text.toLowerCase())).toList();
               });
-            })
+            },onAdd: (){
+
+            },)
         ),
         backgroundColor: Colors.white,
         body: _isFetching ?

@@ -51,7 +51,8 @@ dependencies:
 
   # FIREBASE
   firebase_database: ^12.0.0
-  firebase_core: ^4.0.0
+  firebase_core: ^4.1.0
+  cloud_firestore: ^6.0.1
   firebase_core_platform_interface: any
   firebase_database_platform_interface: any
 

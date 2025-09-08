@@ -6,11 +6,12 @@ import '../../utils/palettes/app_colors.dart' hide Colors;
 
 class Appbar extends StatefulWidget {
   final String title;
-  final bool isBook;
+  final bool isBook, hasAddButton;
   final Color color,toggleColor;
   final ValueChanged<String> onchange;
   final Function(bool)? toggleBook;
-  Appbar({required this.title, required this.onchange, this.isBook = false, required this.color, required this.toggleColor, this.toggleBook});
+  final Function onAdd;
+  Appbar({required this.title, required this.onchange, this.isBook = false, this.hasAddButton = false, required this.color, required this.toggleColor, this.toggleBook, required this.onAdd});
   @override
   State<Appbar> createState() => _AppbarState();
 }
@@ -56,7 +57,7 @@ class _AppbarState extends State<Appbar> {
                   child: Row(
                     children: [
                       Text(widget.title,style: TextStyle(fontFamily: "OpenSans",fontWeight: FontWeight.bold,fontSize: 15,color: widget.color),),
-                      if(widget.isBook)...{
+                      if(widget.isBook || widget.hasAddButton)...{
                         SizedBox(
                           width: 10,
                         ),
@@ -72,7 +73,7 @@ class _AppbarState extends State<Appbar> {
                             ),
                           ),
                           onTap: (){
-                            print("ADD USER");
+                            widget.onAdd();
                           },
                         )
                       },
