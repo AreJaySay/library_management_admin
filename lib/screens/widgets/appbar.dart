@@ -58,7 +58,7 @@ class _AppbarState extends State<Appbar> {
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
                     children: [
-                      Text(widget.title,style: TextStyle(fontFamily: "OpenSans",fontWeight: FontWeight.bold,fontSize: 15,color: _selected == "books" ? colors.umber : Colors.grey,),),
+                      Text(widget.title,style: TextStyle(fontFamily: "OpenSans",fontWeight: FontWeight.bold,fontSize: 15,color: _selected == "book" ? colors.umber : Colors.grey,),),
                       if(widget.isBook || widget.hasAddButton)...{
                         SizedBox(
                           width: 10,

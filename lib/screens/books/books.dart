@@ -218,8 +218,8 @@ class MenuItem {
 abstract class MenuItems {
   static const List<MenuItem> firstItems = [home, share];
 
-  static const home = MenuItem(text: 'Accept', icon: Icons.check);
-  static const share = MenuItem(text: 'Decline', icon: Icons.cancel_outlined);
+  static const home = MenuItem(text: 'Edit', icon: Icons.edit);
+  static const share = MenuItem(text: 'Delete', icon: Icons.delete);
 
   static Widget buildItem(MenuItem item) {
     return Row(
