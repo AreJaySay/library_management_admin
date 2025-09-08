@@ -18,7 +18,7 @@ class Appbar extends StatefulWidget {
 class _AppbarState extends State<Appbar> {
   DateTime _currentTime = DateTime.now();
   Timer? _timer;
-  String _selected = "books";
+  String _selected = "book";
 
   @override
   void initState() {
@@ -68,7 +68,7 @@ class _AppbarState extends State<Appbar> {
                             width: 23,
                             height: 23,
                             child: CircleAvatar(
-                              backgroundColor: _selected == "books" ? colors.umber : Colors.grey,
+                              backgroundColor: _selected == "book" ? colors.umber : Colors.grey,
                               child: Center(
                                 child: Icon(Icons.add,color: Colors.white,size: 20,),
                               ),
