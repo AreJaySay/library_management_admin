@@ -8,6 +8,7 @@ import 'package:library_book/models/books.dart';
 import 'package:library_book/models/users.dart';
 import 'package:library_book/screens/books/borrower.dart';
 import 'package:library_book/screens/books/components/add_book.dart';
+import 'package:library_book/screens/books/reservation.dart';
 import 'package:library_book/screens/users/components/edit_user_modal.dart';
 import 'package:library_book/screens/widgets/appbar.dart';
 import 'package:library_book/services/apis/books.dart';
@@ -27,7 +28,7 @@ class _BooksState extends State<Books> {
   final BooksApi _booksApi = new BooksApi();
   final _scrollController = ScrollController();
   List? _toSearch;
-  bool _isBook = true;
+  String _selected = "book";
 
 
   Future _deleteBook(String data)async{
@@ -60,13 +61,13 @@ class _BooksState extends State<Books> {
                 shadowColor: Colors.grey.shade200,
                 centerTitle: false,
                 backgroundColor: Colors.white,
-                flexibleSpace: Appbar(isBook: true,title: "BOOKS", color: !_isBook ? Colors.grey : colors.umber, toggleColor: _isBook ? Colors.grey : colors.umber, onchange: (text){
+                flexibleSpace: Appbar(isReservation: true,isBook: true,title: "BOOKS",onchange: (text){
                   setState(() {
                      booksModel.update(data: booksModel.valueSearch!.where((s) => s["name"].toString().toLowerCase().contains(text.toLowerCase())).toList());
                   });
-                }, toggleBook: (value){
+                }, selected: (value){
                    setState(() {
-                     _isBook = value;
+                     _selected = value;
                    });
                 },onAdd: (){
                   showDialog<void>(
@@ -82,8 +83,10 @@ class _BooksState extends State<Books> {
                 },)
             ),
             backgroundColor: Colors.white,
-            body: !_isBook ?
+            body: _selected == "borrower" ?
             Borrower() :
+            _selected == "reservation" ?
+            Reservations() :
             !snapshot.hasData ?
             TableLoader() :
             Stack(

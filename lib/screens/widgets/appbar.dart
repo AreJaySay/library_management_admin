@@ -6,12 +6,11 @@ import '../../utils/palettes/app_colors.dart' hide Colors;
 
 class Appbar extends StatefulWidget {
   final String title;
-  final bool isBook, hasAddButton;
-  final Color color,toggleColor;
+  final bool isBook, isReservation, hasAddButton;
   final ValueChanged<String> onchange;
-  final Function(bool)? toggleBook;
+  final Function(String)? selected;
   final Function onAdd;
-  Appbar({required this.title, required this.onchange, this.isBook = false, this.hasAddButton = false, required this.color, required this.toggleColor, this.toggleBook, required this.onAdd});
+  Appbar({required this.title, required this.onchange, this.isBook = false, this.isReservation = false, this.hasAddButton = false, this.selected, required this.onAdd});
   @override
   State<Appbar> createState() => _AppbarState();
 }
@@ -19,7 +18,7 @@ class Appbar extends StatefulWidget {
 class _AppbarState extends State<Appbar> {
   DateTime _currentTime = DateTime.now();
   Timer? _timer;
-  bool _isBooks = true;
+  String _selected = "books";
 
   @override
   void initState() {
@@ -49,14 +48,17 @@ class _AppbarState extends State<Appbar> {
               ignoring: !widget.isBook,
               child: InkWell(
                 onTap: (){
-                  widget.toggleBook!(true);
+                  widget.selected!("book");
+                  setState(() {
+                    _selected = "book";
+                  });
                 },
                 child: Container(
                   height: 50,
                   padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
                     children: [
-                      Text(widget.title,style: TextStyle(fontFamily: "OpenSans",fontWeight: FontWeight.bold,fontSize: 15,color: widget.color),),
+                      Text(widget.title,style: TextStyle(fontFamily: "OpenSans",fontWeight: FontWeight.bold,fontSize: 15,color: _selected == "books" ? colors.umber : Colors.grey,),),
                       if(widget.isBook || widget.hasAddButton)...{
                         SizedBox(
                           width: 10,
@@ -66,7 +68,7 @@ class _AppbarState extends State<Appbar> {
                             width: 23,
                             height: 23,
                             child: CircleAvatar(
-                              backgroundColor: widget.color,
+                              backgroundColor: _selected == "books" ? colors.umber : Colors.grey,
                               child: Center(
                                 child: Icon(Icons.add,color: Colors.white,size: 20,),
                               ),
@@ -88,18 +90,39 @@ class _AppbarState extends State<Appbar> {
             if(widget.isBook)...{
               InkWell(
                   onTap: (){
-                    widget.toggleBook!(false);
+                    widget.selected!("borrower");
+                    setState(() {
+                      _selected = "borrower";
+                    });
                   },
                   child: Container(
                     height: 50,
                     padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Center(child: Text("BORROWERS",style: TextStyle(fontFamily: "OpenSans",fontWeight: FontWeight.bold,fontSize: 15,color: widget.toggleColor),)),
+                    child: Center(child: Text("BORROWERS",style: TextStyle(fontFamily: "OpenSans",fontWeight: FontWeight.bold,fontSize: 15,color: _selected == "borrower" ? colors.umber : Colors.grey,),)),
+                  )
+              ),
+            },
+            if(widget.isReservation)...{
+              VerticalDivider(color: colors.umber.withOpacity(0.1),),
+            },
+            if(widget.isReservation)...{
+              InkWell(
+                  onTap: (){
+                    widget.selected!("reservation");
+                    setState(() {
+                      _selected = "reservation";
+                    });
+                  },
+                  child: Container(
+                    height: 50,
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Center(child: Text("RESERVATIONS",style: TextStyle(fontFamily: "OpenSans",fontWeight: FontWeight.bold,fontSize: 15,color: _selected == "reservation" ? colors.umber : Colors.grey,),)),
                   )
               ),
             },
             Spacer(),
             SizedBox(
-              width: 500,
+              width: 350,
               child: TextField(
                 style: TextStyle(fontFamily: "OpenSans"),
                 decoration: InputDecoration(

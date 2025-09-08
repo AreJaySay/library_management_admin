@@ -40,7 +40,7 @@ class _UsersState extends State<Users> {
             shadowColor: Colors.grey.shade200,
             centerTitle: false,
             backgroundColor: Colors.white,
-            flexibleSpace: Appbar(title: "STUDENTS", color: colors.umber, toggleColor: Colors.transparent, onchange: (text) {
+            flexibleSpace: Appbar(title: "STUDENTS", onchange: (text) {
               setState(() {
                 // _students = _toSearch!.where((s) => s["name"].toString().toLowerCase().contains(text.toLowerCase())).toList();
               });
