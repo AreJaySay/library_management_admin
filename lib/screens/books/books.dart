@@ -30,7 +30,6 @@ class _BooksState extends State<Books> {
   List? _toSearch;
   String _selected = "book";
 
-
   Future _deleteBook(String data)async{
     try {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -77,10 +76,10 @@ class _BooksState extends State<Books> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.all(Radius.circular(20.0))
                           ),
-                          content: AddBook(details: {})
+                          content: AddBook()
                       )
                   );
-                },)
+                })
             ),
             backgroundColor: Colors.white,
             body: _selected == "borrower" ?
@@ -100,13 +99,15 @@ class _BooksState extends State<Books> {
                       border: TableBorder.all(color: colors.umber.withOpacity(0.1)),
                       columnWidths: const <int, TableColumnWidth>{
                         0: FixedColumnWidth(100),
-                        1: FixedColumnWidth(150),
-                        2: FixedColumnWidth(150),
-                        3: FlexColumnWidth(),
-                        4: FlexColumnWidth(),
-                        5: FixedColumnWidth(250),
-                        6: FixedColumnWidth(100),
-                        7: FixedColumnWidth(100),
+                        1: FixedColumnWidth(100),
+                        2: FixedColumnWidth(120),
+                        3: FixedColumnWidth(150),
+                        4: FixedColumnWidth(150),
+                        5: FixedColumnWidth(150),
+                        6: FixedColumnWidth(150),
+                        7: FlexColumnWidth(),
+                        8: FixedColumnWidth(100),
+                        9: FixedColumnWidth(100),
                       },
                       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                       children: <TableRow>[
@@ -117,10 +118,12 @@ class _BooksState extends State<Books> {
                               child: Center(child: Text('ID',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold),)),
                             )),
                             TableCell(child: Center(child: Text('Image',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                            TableCell(child: Center(child: Text('ISBN',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                            TableCell(child: Center(child: Text('Isbn',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                            TableCell(child: Center(child: Text('Subject',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
                             TableCell(child: Center(child: Text('Title',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                            TableCell(child: Center(child: Text('Summary',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
                             TableCell(child: Center(child: Text('Author',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                            TableCell(child: Center(child: Text('Publisher',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                            TableCell(child: Center(child: Text('Summary',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
                             TableCell(child: Center(child: Text('Stock',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
                             TableCell(child: Center(child: Text('Action',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
                           ],
@@ -128,29 +131,42 @@ class _BooksState extends State<Books> {
                         for(int x = 0; x < snapshot.data!.length; x++)...{
                           TableRow(
                             decoration: BoxDecoration(
-                                color: x.isEven ? Colors.white : colors.umber.withOpacity(0.1)
+                                color: Colors.white
                             ),
                             children: <Widget>[
                               TableCell(child: Padding(
                                 padding: EdgeInsetsGeometry.symmetric(vertical: 10),
                                 child: Center(child: Text('${x+1}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,)),
                               )),
-                              TableCell(child: Center(
-                                child: Image(
-                                  image: AssetImage("assets/icons/book.png"),
-                                  width: 25,
-                                  height: 25,
-                                  color: colors.umber,
+                              TableCell(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Center(
+                                    child: snapshot.data![x]["base64Image"] != "" ?
+                                    Image.memory(
+                                      base64Decode(snapshot.data![x]["base64Image"]),
+                                      width: 35,
+                                      height: 55,
+                                      fit: BoxFit.fill,
+                                    ) :
+                                    Image(
+                                      image: AssetImage("assets/icons/book.png"),
+                                      width: 50,
+                                      height: 50,
+                                      color: Colors.grey.shade400,
+                                    ),
+                                  ),
                                 ),
                               ),
-                              ),
                               TableCell(child: Center(child: Text('${snapshot.data![x]["isbn"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                              TableCell(child: Center(child: Text('${snapshot.data![x]["subject"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
                               TableCell(child: Center(child: Text('${snapshot.data![x]["title"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                              TableCell(child: Center(child: Text('${snapshot.data![x]["author"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                              TableCell(child: Center(child: Text('${snapshot.data![x]["publisher"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
                               TableCell(child: Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
                                 child: Center(child: Text('${snapshot.data![x]["summary"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,maxLines: 3,overflow: TextOverflow.ellipsis,)),
                               )),
-                              TableCell(child: Center(child: Text('${snapshot.data![x]["author"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
                               TableCell(child: Center(child: Text('${snapshot.data![x]["stock"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
                               TableCell(child: Center(child: DropdownButtonHideUnderline(
                                 child: DropdownButton2(
@@ -169,7 +185,18 @@ class _BooksState extends State<Books> {
                                   onChanged: (value) {
                                     MenuItems.onChanged(context, value! as MenuItem);
                                     if(value.text == "Edit"){
-
+                                      showDialog<void>(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                              backgroundColor: Colors.white,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.all(Radius.circular(20.0))
+                                              ),
+                                              content: AddBook(details: snapshot.data![x])
+                                          )
+                                      );
+                                    }else{
+                                      _booksApi.deleteBook(isbn: snapshot.data![x]["isbn"]);
                                     }
                                   },
                                   dropdownStyleData: DropdownStyleData(

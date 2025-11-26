@@ -20,19 +20,6 @@ class _BorrowerState extends State<Borrower> {
   final Routes _routes = new Routes();
   final BorrowersApi _borrowersApi = new BorrowersApi();
   final _scrollController = ScrollController();
-  List? _logbooks;
-  List? _toSearch;
-  bool _isFetching = true;
-
-  Future<List<dynamic>> _get() async {
-    String jsonString = await rootBundle.loadString('assets/jsons/borrowers.json');
-    setState(() {
-      _toSearch = jsonDecode(jsonString);
-      _logbooks = jsonDecode(jsonString);
-      _isFetching = false;
-    });
-    return jsonDecode(jsonString);
-  }
 
   @override
   void initState() {
@@ -95,7 +82,7 @@ class _BorrowerState extends State<Borrower> {
                     for(int x = 0; x < snapshot.data!.length; x++)...{
                       TableRow(
                         decoration: BoxDecoration(
-                            color: x.isEven ? Colors.white : colors.umber.withOpacity(0.1)
+                            color: Colors.white
                         ),
                         children: <Widget>[
                           TableCell(child: Padding(
@@ -108,10 +95,10 @@ class _BorrowerState extends State<Borrower> {
                           TableCell(child: Center(child: Text('${snapshot.data![x]["borrower"]["department"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
                           TableCell(child: Center(child: Text('${snapshot.data![x]["borrower"]["year"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
                           TableCell(child: Center(child: Text('${snapshot.data![x]["borrower"]["section"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                          TableCell(child: Center(child: Text('${snapshot.data![x]["book_information"]["title"]}',style: TextStyle(fontFamily: "Roboto_normal",),textAlign: TextAlign.center,maxLines: 3,))),
-                          TableCell(child: Center(child: Text('${snapshot.data![x]["borrow_details"]["borrow_date"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                          TableCell(child: Center(child: Text('${snapshot.data![x]["borrow_details"]["end_date"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                          TableCell(child: Center(child: Text('Pending',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                          TableCell(child: Center(child: Text('${jsonDecode(snapshot.data![x]["book_information"])["title"]}',style: TextStyle(fontFamily: "Roboto_normal",),textAlign: TextAlign.center,maxLines: 3,))),
+                          TableCell(child: Center(child: Text('${DateFormat("MMM dd, yyyy").format(DateTime.parse(snapshot.data![x]["borrow_details"]["borrow_date"]))}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                          TableCell(child: Center(child: Text('${DateFormat("MMM dd, yyyy").format(DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]))}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                          TableCell(child: Center(child: Text('${snapshot.data![x]["status"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
                           TableCell(child: Center(child: DropdownButtonHideUnderline(
                             child: DropdownButton2(
                               customButton: Icon(
@@ -128,7 +115,12 @@ class _BorrowerState extends State<Borrower> {
                               ],
                               onChanged: (value) {
                                 MenuItems.onChanged(context, value! as MenuItem);
-                                print("${value.text}");
+                                print(snapshot.data![x]["book_id"]);
+                                if(value.text == "Accept"){
+                                  _borrowersApi.updateStatus(book_id: snapshot.data![x]["book_id"], status: "Accepted");
+                                }else{
+                                  _borrowersApi.updateStatus(book_id: snapshot.data![x]["book_id"], status: "Rejected");
+                                }
                               },
                               dropdownStyleData: DropdownStyleData(
                                 width: 160,

@@ -90,16 +90,19 @@ class _UsersState extends State<Users> {
                       for(int x = 0; x < snapshot.data!.length; x++)...{
                         TableRow(
                           decoration: BoxDecoration(
-                            color: x.isEven ? Colors.white : colors.umber.withOpacity(0.1)
+                            color: Colors.white
                           ),
                           children: <Widget>[
                             TableCell(child: Padding(
                               padding: EdgeInsetsGeometry.symmetric(vertical: 10),
                               child: Center(child: Text('${x + 1}',style: TextStyle(fontFamily: "Roboto_normal"))),
                             )),
-                            TableCell(child: Center(child: CircleAvatar(
-                              backgroundImage: NetworkImage(snapshot.data![x]["profile"] == "" ? "https://cdn-icons-png.freepik.com/512/8742/8742495.png" : "${snapshot.data![x]["profile"]}")
-                            ))),
+                            TableCell(child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Center(child: CircleAvatar(
+                                backgroundImage: NetworkImage(snapshot.data![x]["profile"] == "" ? "https://cdn-icons-png.freepik.com/512/8742/8742495.png" : "${snapshot.data![x]["profile"]}")
+                              )),
+                            )),
                             TableCell(child: Center(child: Text('${snapshot.data![x]["name"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
                             TableCell(child: Center(child: Text('${snapshot.data![x]["age"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
                             TableCell(child: Center(child: Text('${snapshot.data![x]["school_id"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),

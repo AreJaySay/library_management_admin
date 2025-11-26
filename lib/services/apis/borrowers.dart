@@ -4,8 +4,10 @@ import 'package:library_book/models/borrowers.dart';
 import '../../models/users.dart';
 
 class BorrowersApi{
+  FirebaseDatabase database = FirebaseDatabase.instance;
+
   Future getBorrowers() async {
-    DatabaseReference ref = FirebaseDatabase.instance.ref('requests');
+    DatabaseReference ref = FirebaseDatabase.instance.ref('borrow');
     ref.onValue.listen((DatabaseEvent event) {
       final dataSnapshot = event.snapshot;
       if (dataSnapshot.exists) {
@@ -19,6 +21,15 @@ class BorrowersApi{
       } else {
         borrowersModel.update(data: []);
       }
+    });
+  }
+
+  Future updateStatus({required String book_id, required String status})async{
+    DatabaseReference usersRef = database.ref('borrow');
+    FirebaseDatabase.instance.ref().child('borrow').orderByChild("book_id").equalTo(book_id).onChildAdded.forEach((event)async{
+      await usersRef.update({
+        "${event.snapshot.key!}/status": status,
+      });
     });
   }
 }

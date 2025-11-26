@@ -91,7 +91,7 @@ class _ReservationsState extends State<Reservations> {
                 for(int x = 0; x < _logbooks!.length; x++)...{
                   TableRow(
                     decoration: BoxDecoration(
-                        color: x.isEven ? Colors.white : colors.umber.withOpacity(0.1)
+                        color: Colors.white
                     ),
                     children: <Widget>[
                       TableCell(child: Padding(

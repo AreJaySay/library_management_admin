@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_side_menu/flutter_side_menu.dart';
 import 'package:intl/intl.dart';
+import 'package:library_book/models/page_navigators.dart';
 import 'package:library_book/screens/books/books.dart';
 import 'package:library_book/screens/logbooks/logbooks.dart';
+import 'package:library_book/screens/notifications/notifications.dart';
 import 'package:library_book/screens/users/users.dart';
 import 'package:library_book/utils/palettes/app_colors.dart' hide Colors;
 
@@ -18,6 +20,13 @@ class _LandingState extends State<Landing> {
   List<Widget> _pages = [Users(),LogBooks(),Books()];
   int _selected = 0;
   bool _isCollapsed = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    pageNavigatorsModel.update(data: false);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +76,7 @@ class _LandingState extends State<Landing> {
                       setState(() {
                         _selected = x;
                       });
+                      pageNavigatorsModel.update(data: false);
                     },
                     title: _title[x],
                     icon: Center(
@@ -106,8 +116,15 @@ class _LandingState extends State<Landing> {
             hasResizerToggle: false,
           ),
           VerticalDivider(),
-          Expanded(
-            child: _pages[_selected],
+          StreamBuilder(
+            stream: pageNavigatorsModel.subject,
+            builder: (context, snapshot) {
+              return Expanded(
+                child: snapshot.data! ?
+                Notifications() :
+                _pages[_selected],
+              );
+            }
           )
         ],
       ),

@@ -308,14 +308,14 @@ class _EditUserModalState extends State<EditUserModal> {
           ),
           Positioned(
             right: -40,
-            top: -40,
-            child: IconButton(
-              onPressed: () {
+            top: -35,
+            child: InkWell(
+              onTap: () {
                 Navigator.of(context).pop();
               },
-              icon: const CircleAvatar(
+              child: CircleAvatar(
                 backgroundColor: Colors.white,
-                child: Icon(Icons.close),
+                child: Icon(Icons.close, color: colors.umber,),
               ),
             ),
           ),
