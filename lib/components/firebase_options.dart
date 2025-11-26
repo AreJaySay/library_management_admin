@@ -46,34 +46,33 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyAT2ccY32MbBD8ycuU64fpuQEruaHWZl_A',
+    appId: '1:254020979059:web:3994369a476e71028bdd06',
+    messagingSenderId: '254020979059',
+    projectId: 'ctb-attendance-monitorin-4ead4',
+    authDomain: 'ctb-attendance-monitorin-4ead4.firebaseapp.com',
+    databaseURL: 'https://ctb-attendance-monitorin-4ead4-default-rtdb.firebaseio.com',
+    storageBucket: 'ctb-attendance-monitorin-4ead4.firebasestorage.app',
+    measurementId: 'G-HDGX3Y6HGW',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCymB3QkPVOFCpd6hE4LL0EevBy3FSQ8QI',
-    appId: '1:517637478860:android:b340c01a7a6d30a26d2569',
-    messagingSenderId: '517637478860',
-    projectId: 'library-management-d62e6',
-    databaseURL: 'https://library-management-d62e6-default-rtdb.firebaseio.com',
-    storageBucket: 'library-management-d62e6.firebasestorage.app',
+    apiKey: 'AIzaSyDM0F2XXZVJj6FIReNr61QdS9R5NalcjR0',
+    appId: '1:254020979059:android:ca3942d922258b618bdd06',
+    messagingSenderId: '254020979059',
+    projectId: 'ctb-attendance-monitorin-4ead4',
+    databaseURL: 'https://ctb-attendance-monitorin-4ead4-default-rtdb.firebaseio.com',
+    storageBucket: 'ctb-attendance-monitorin-4ead4.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDGMjKSa1Ujj07_4dAMvIN0a5xxZvA9ooQ',
-    appId: '1:517637478860:ios:c57383918244c5566d2569',
-    messagingSenderId: '517637478860',
-    projectId: 'library-management-d62e6',
-    databaseURL: 'https://library-management-d62e6-default-rtdb.firebaseio.com',
-    storageBucket: 'library-management-d62e6.firebasestorage.app',
-    iosBundleId: 'com.example.libraryBook',
+    apiKey: 'AIzaSyAFKvjTZJzKnzOFN7FWxa0fIN4ncBSpJVI',
+    appId: '1:254020979059:ios:279af52edde0d22c8bdd06',
+    messagingSenderId: '254020979059',
+    projectId: 'ctb-attendance-monitorin-4ead4',
+    databaseURL: 'https://ctb-attendance-monitorin-4ead4-default-rtdb.firebaseio.com',
+    storageBucket: 'ctb-attendance-monitorin-4ead4.firebasestorage.app',
+    iosBundleId: 'com.attendancemonitoring.web',
   );
-
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyACVBNqQCO6BTxDQ-9Q2bGDkoRWuMkm5Fs',
-    appId: '1:517637478860:web:b69d81bc3d79822a6d2569',
-    messagingSenderId: '517637478860',
-    projectId: 'library-management-d62e6',
-    authDomain: 'library-management-d62e6.firebaseapp.com',
-    databaseURL: 'https://library-management-d62e6-default-rtdb.firebaseio.com',
-    storageBucket: 'library-management-d62e6.firebasestorage.app',
-    measurementId: 'G-7V6PB4PD25',
-  );
-
 }

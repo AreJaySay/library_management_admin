@@ -60,13 +60,13 @@ class BooksApi{
       if (dataSnapshot.exists) {
         final data = dataSnapshot.value;
         if (data is Map) {
-          booksModel.update(data: data.values.toList());
-          print("BOOKS ${data.values.toList()}");
+          // booksModel.update(data: data.values.toList());
+          // print("BOOKS ${data.values.toList()}");
         } else if (data is List) {
-          booksModel.update(data: data);
+          // booksModel.update(data: data);
         }
       } else {
-        booksModel.update(data: []);
+        // booksModel.update(data: []);
       }
     });
   }

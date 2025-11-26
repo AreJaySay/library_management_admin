@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 2025/11/22-20:35:39.009 3dabd Reusing MANIFEST /private/var/folders/hh/f3zvdxmx0pvgmmq1f355wlx40000gn/T/flutter_tools.5bBspG/flutter_tools_chrome_device.84dgWG/Default/Service Worker/Database/MANIFEST-000001
 2025/11/22-20:35:39.009 3dabd Recovering log #3
 2025/11/22-20:35:39.010 3dabd Reusing old log /private/var/folders/hh/f3zvdxmx0pvgmmq1f355wlx40000gn/T/flutter_tools.5bBspG/flutter_tools_chrome_device.84dgWG/Default/Service Worker/Database/000003.log 
+=======
+2025/11/19-12:15:31.845 ce11b Reusing MANIFEST /private/var/folders/hh/f3zvdxmx0pvgmmq1f355wlx40000gn/T/flutter_tools.Jou53M/flutter_tools_chrome_device.6qdEJw/Default/Service Worker/Database/MANIFEST-000001
+2025/11/19-12:15:31.847 ce11b Recovering log #3
+2025/11/19-12:15:31.847 ce11b Reusing old log /private/var/folders/hh/f3zvdxmx0pvgmmq1f355wlx40000gn/T/flutter_tools.Jou53M/flutter_tools_chrome_device.6qdEJw/Default/Service Worker/Database/000003.log 
+>>>>>>> origin/main

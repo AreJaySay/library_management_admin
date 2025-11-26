@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 2025/11/22-20:35:39.011 3daf5 Reusing MANIFEST /private/var/folders/hh/f3zvdxmx0pvgmmq1f355wlx40000gn/T/flutter_tools.5bBspG/flutter_tools_chrome_device.84dgWG/Default/Site Characteristics Database/MANIFEST-000001
 2025/11/22-20:35:39.011 3daf5 Recovering log #3
 2025/11/22-20:35:39.011 3daf5 Reusing old log /private/var/folders/hh/f3zvdxmx0pvgmmq1f355wlx40000gn/T/flutter_tools.5bBspG/flutter_tools_chrome_device.84dgWG/Default/Site Characteristics Database/000003.log 
+=======
+2025/11/19-12:15:31.847 ce119 Reusing MANIFEST /private/var/folders/hh/f3zvdxmx0pvgmmq1f355wlx40000gn/T/flutter_tools.Jou53M/flutter_tools_chrome_device.6qdEJw/Default/Site Characteristics Database/MANIFEST-000001
+2025/11/19-12:15:31.847 ce119 Recovering log #3
+2025/11/19-12:15:31.847 ce119 Reusing old log /private/var/folders/hh/f3zvdxmx0pvgmmq1f355wlx40000gn/T/flutter_tools.Jou53M/flutter_tools_chrome_device.6qdEJw/Default/Site Characteristics Database/000003.log 
+>>>>>>> origin/main

@@ -1,7 +1,4 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:library_book/models/books.dart';
-import 'package:library_book/models/borrowers.dart';
-import '../../models/users.dart';
 
 class BorrowersApi{
   FirebaseDatabase database = FirebaseDatabase.instance;
@@ -13,13 +10,13 @@ class BorrowersApi{
       if (dataSnapshot.exists) {
         final data = dataSnapshot.value;
         if (data is Map) {
-          borrowersModel.update(data: data.values.toList());
+          // borrowersModel.update(data: data.values.toList());
           print("BORROWERS ${data.values.toList()}");
         } else if (data is List) {
-          borrowersModel.update(data: data);
+          // borrowersModel.update(data: data);
         }
       } else {
-        borrowersModel.update(data: []);
+        // borrowersModel.update(data: []);
       }
     });
   }

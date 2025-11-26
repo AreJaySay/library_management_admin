@@ -1,4 +1,4 @@
-# library_book
+# ctb-attendance-monitoring
 
 A new Flutter project.
 
@@ -15,7 +15,4 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 # library_management-_admin
-<<<<<<< HEAD
-# library-management-admin
-=======
->>>>>>> origin/main
+# ctb_attendance_web

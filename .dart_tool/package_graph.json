@@ -1,10 +1,10 @@
 {
   "roots": [
-    "library_book"
+    "ctb_attendance_monitoring"
   ],
   "packages": [
     {
-      "name": "library_book",
+      "name": "ctb_attendance_monitoring",
       "version": "1.0.0+1",
       "dependencies": [
         "another_flushbar",
@@ -26,6 +26,7 @@
         "flutter_launcher_icons",
         "flutter_localizations",
         "flutter_side_menu",
+        "hex",
         "intl",
         "modal_bottom_sheet",
         "page_transition",
@@ -172,6 +173,14 @@
       ]
     },
     {
+<<<<<<< HEAD
+=======
+      "name": "hex",
+      "version": "0.2.0",
+      "dependencies": []
+    },
+    {
+>>>>>>> origin/main
       "name": "flutter_launcher_icons",
       "version": "0.14.4",
       "dependencies": [
@@ -940,7 +949,11 @@
     },
     {
       "name": "crypto",
+<<<<<<< HEAD
       "version": "3.0.6",
+=======
+      "version": "3.0.7",
+>>>>>>> origin/main
       "dependencies": [
         "typed_data"
       ]
