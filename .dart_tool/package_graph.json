@@ -26,7 +26,6 @@
         "flutter_launcher_icons",
         "flutter_localizations",
         "flutter_side_menu",
-        "hex",
         "intl",
         "modal_bottom_sheet",
         "page_transition",
@@ -173,14 +172,6 @@
       ]
     },
     {
-<<<<<<< HEAD
-=======
-      "name": "hex",
-      "version": "0.2.0",
-      "dependencies": []
-    },
-    {
->>>>>>> origin/main
       "name": "flutter_launcher_icons",
       "version": "0.14.4",
       "dependencies": [
@@ -331,7 +322,7 @@
     },
     {
       "name": "meta",
-      "version": "1.16.0",
+      "version": "1.17.0",
       "dependencies": []
     },
     {
@@ -393,7 +384,7 @@
     },
     {
       "name": "test_api",
-      "version": "0.7.6",
+      "version": "0.7.7",
       "dependencies": [
         "async",
         "boolean_selector",
@@ -949,11 +940,7 @@
     },
     {
       "name": "crypto",
-<<<<<<< HEAD
       "version": "3.0.6",
-=======
-      "version": "3.0.7",
->>>>>>> origin/main
       "dependencies": [
         "typed_data"
       ]
