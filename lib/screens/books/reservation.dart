@@ -3,47 +3,56 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:library_book/functions/loaders.dart';
+import 'package:library_book/models/reservations.dart';
 import 'package:library_book/screens/users/components/edit_user_modal.dart';
 import 'package:library_book/screens/widgets/appbar.dart';
+import 'package:library_book/services/apis/reservations.dart';
 import 'package:library_book/services/routes.dart';
 import 'package:library_book/utils/palettes/app_colors.dart' hide Colors;
+import 'package:library_book/utils/snackbars/snackbar_message.dart';
+
+import '../widgets/shimmer_loader/table.dart';
 class Reservations extends StatefulWidget {
   @override
   State<Reservations> createState() => _ReservationsState();
 }
 
 class _ReservationsState extends State<Reservations> {
-  final Routes _routes = new Routes();
   final _scrollController = ScrollController();
-  List? _logbooks;
-  List? _toSearch;
-  bool _isFetching = true;
-
-  Future<List<dynamic>> _get() async {
-    String jsonString = await rootBundle.loadString('assets/jsons/reservations.json');
-    setState(() {
-      _toSearch = jsonDecode(jsonString);
-      _logbooks = jsonDecode(jsonString);
-      _isFetching = false;
-    });
-    return jsonDecode(jsonString);
-  }
+  final ReservationApis _reservationApis = new ReservationApis();
+  final ScreenLoaders _screenLoaders = new ScreenLoaders();
+  final SnackbarMessage _snackbarMessage = new SnackbarMessage();
 
   @override
   void initState() {
     // TODO: implement initState
-    _get();
+    _reservationApis.get();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return _isFetching ?
-    Center(
-      child: CircularProgressIndicator(),
-    ) :
-    Stack(
-      children: [
+    return StreamBuilder(
+      stream: reservationModel.subject,
+      builder: (context, snapshot) {
+        return !snapshot.hasData ?
+        TableLoader() :
+        snapshot.data!.isEmpty ?
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image(
+                width: 200,
+                height: 200,
+                image: AssetImage("assets/icons/no_data_found.jpg"),
+              ),
+              Text("No Data Found !",style: TextStyle(fontFamily: "OpenSans",fontSize: 20,color: Colors.grey.shade400),)
+            ],
+          ),
+        ) :
         Scrollbar(
           controller: _scrollController,
           child: SingleChildScrollView(
@@ -54,7 +63,7 @@ class _ReservationsState extends State<Reservations> {
               columnWidths: const <int, TableColumnWidth>{
                 0: FixedColumnWidth(100),
                 1: FlexColumnWidth(),
-                2: FlexColumnWidth(),
+                2: FixedColumnWidth(100),
                 3: FlexColumnWidth(),
                 4: FlexColumnWidth(),
                 5: FlexColumnWidth(),
@@ -64,7 +73,6 @@ class _ReservationsState extends State<Reservations> {
                 9: FlexColumnWidth(),
                 10: FlexColumnWidth(),
                 11: FlexColumnWidth(),
-                12: FlexColumnWidth(),
               },
               defaultVerticalAlignment: TableCellVerticalAlignment.middle,
               children: <TableRow>[
@@ -81,14 +89,13 @@ class _ReservationsState extends State<Reservations> {
                     TableCell(child: Center(child: Text('Year',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
                     TableCell(child: Center(child: Text('Section',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
                     TableCell(child: Center(child: Text('Book title',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                    TableCell(child: Center(child: Text('Reservation date',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15),textAlign: TextAlign.center,))),
-                    TableCell(child: Center(child: Text('Borrow date',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                    TableCell(child: Center(child: Text('Created at',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15),textAlign: TextAlign.center,))),
+                    TableCell(child: Center(child: Text('Reserve date',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
                     TableCell(child: Center(child: Text('Return date',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                    TableCell(child: Center(child: Text('Status',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
                     TableCell(child: Center(child: Text('Action',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
                   ],
                 ),
-                for(int x = 0; x < _logbooks!.length; x++)...{
+                for(int x = 0; x < snapshot.data!.length; x++)...{
                   TableRow(
                     decoration: BoxDecoration(
                         color: Colors.white
@@ -96,19 +103,18 @@ class _ReservationsState extends State<Reservations> {
                     children: <Widget>[
                       TableCell(child: Padding(
                         padding: EdgeInsetsGeometry.symmetric(vertical: 10),
-                        child: Center(child: Text('${_logbooks![x]["id"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,)),
+                        child: Center(child: Text('${x+1}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,)),
                       )),
-                      TableCell(child: Center(child: Text('${_logbooks![x]["name"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                      TableCell(child: Center(child: Text('${_logbooks![x]["age"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                      TableCell(child: Center(child: Text('${_logbooks![x]["school_id"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                      TableCell(child: Center(child: Text('${_logbooks![x]["department"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                      TableCell(child: Center(child: Text('${_logbooks![x]["year"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                      TableCell(child: Center(child: Text('${_logbooks![x]["section"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                      TableCell(child: Center(child: Text('${_logbooks![x]["book_title"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                      TableCell(child: Center(child: Text('${_logbooks![x]["reserve_date"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                      TableCell(child: Center(child: Text('${_logbooks![x]["borrow_date"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                      TableCell(child: Center(child: Text('${_logbooks![x]["return_date"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                      TableCell(child: Center(child: Text('${_logbooks![x]["status"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                      TableCell(child: Center(child: Text('${snapshot.data![x]["borrower"]["name"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                      TableCell(child: Center(child: Text('${snapshot.data![x]["borrower"]["age"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                      TableCell(child: Center(child: Text('${snapshot.data![x]["borrower"]["school_id"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                      TableCell(child: Center(child: Text('${snapshot.data![x]["borrower"]["department"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                      TableCell(child: Center(child: Text('${snapshot.data![x]["borrower"]["year"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                      TableCell(child: Center(child: Text('${snapshot.data![x]["borrower"]["section"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                      TableCell(child: Center(child: Text('${jsonDecode(snapshot.data![x]["book_information"])["title"]}',style: TextStyle(fontFamily: "Roboto_normal",),textAlign: TextAlign.center,maxLines: 3,))),
+                      TableCell(child: Center(child: Text('${DateFormat("MMM dd, yyyy").format(DateTime.parse(snapshot.data![x]["created_at"]))}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                      TableCell(child: Center(child: Text('${DateFormat("MMM dd, yyyy").format(DateTime.parse(snapshot.data![x]["borrow_details"]["borrow_date"]))}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                      TableCell(child: Center(child: Text('${DateFormat("MMM dd, yyyy").format(DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]))}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
                       TableCell(child: Center(child: DropdownButtonHideUnderline(
                         child: DropdownButton2(
                           customButton: Icon(
@@ -125,7 +131,11 @@ class _ReservationsState extends State<Reservations> {
                           ],
                           onChanged: (value) {
                             MenuItems.onChanged(context, value! as MenuItem);
-                            print("${value.text}");
+                            if(value.text == "Accept"){
+                              _accept(details: snapshot.data![x]);
+                            }else{
+
+                            }
                           },
                           dropdownStyleData: DropdownStyleData(
                             width: 160,
@@ -151,8 +161,43 @@ class _ReservationsState extends State<Reservations> {
               ],
             ),
           ),
-        ),
-      ],
+        );
+      }
+    );
+  }
+  void _accept({required Map details}){
+    bool _isLoading = false;
+
+    showDialog(
+      context: context,
+      barrierDismissible: false, // User must interact with buttons
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmation',style: TextStyle(fontFamily: "OpenSans",fontWeight: FontWeight.w500),),
+          content: Text('Are you sure you want to accept this reservation?',style: TextStyle(fontFamily: "OpenSans"),),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel',style: TextStyle(fontFamily: "OpenSans", color: Colors.black54),),
+            ),
+            ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(colors.umber),
+              ),
+              onPressed: () {
+                _reservationApis.accept(details: details).whenComplete((){
+                  _reservationApis.delete(id: details["id"]);
+                  Navigator.of(context).pop(null);
+                  _snackbarMessage.snackbarMessage(context, message: "Successfully accepted reservation!");
+                });
+              },
+              child: Text('Confirm',style: TextStyle(fontFamily: "OpenSans", color: Colors.white),),
+            ),
+          ],
+        );
+      },
     );
   }
 }

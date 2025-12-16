@@ -1,12 +1,29 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:ui' as ui;
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:excel/excel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:intl/intl.dart';
+import 'package:library_book/models/attendances.dart';
+import 'package:library_book/models/users.dart';
 import 'package:library_book/screens/users/components/edit_user_modal.dart';
 import 'package:library_book/screens/widgets/appbar.dart';
+import 'package:library_book/services/apis/attendances.dart';
 import 'package:library_book/services/routes.dart';
 import 'package:library_book/utils/palettes/app_colors.dart' hide Colors;
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:universal_html/html.dart' as html;
+import '../../widgets/no_data_widget.dart';
+import '../users/components/filters.dart';
+import '../widgets/button.dart';
+import '../widgets/shimmer_loader/table.dart';
 
 class LogBooks extends StatefulWidget {
   @override
@@ -16,115 +33,226 @@ class LogBooks extends StatefulWidget {
 class _LogBooksState extends State<LogBooks> {
   final Routes _routes = new Routes();
   final _scrollController = ScrollController();
-  List? _logbooks;
-  List? _toSearch;
-  bool _isFetching = true;
-
-  Future<List<dynamic>> _get() async {
-    String jsonString =
-    await rootBundle.loadString('assets/jsons/logbooks.json');
-    setState(() {
-      _toSearch = jsonDecode(jsonString);
-      _logbooks = jsonDecode(jsonString);
-      _isFetching = false;
-    });
-    return jsonDecode(jsonString);
-  }
+  final GlobalKey _printKey = GlobalKey();
+  final Materialbutton _materialbutton = new Materialbutton();
+  final AttendancesApis _attendancesApis = new AttendancesApis();
 
   @override
   void initState() {
     // TODO: implement initState
-    _get();
+    _attendancesApis.get();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-            elevation: 1,
-            shadowColor: Colors.grey.shade200,
-            centerTitle: false,
-            backgroundColor: Colors.white,
-            flexibleSpace: Appbar(title: "LOGBOOKS", onchange: (text){
-              setState(() {
-                _logbooks = _toSearch!.where((s) => s["name"].toString().toLowerCase().contains(text.toLowerCase())).toList();
-              });
-            },onAdd: (){
-
-            },)
-        ),
-        backgroundColor: Colors.white,
-        body: _isFetching ?
-        Center(
-          child: CircularProgressIndicator(),
-        ) :
-        Stack(
-          children: [
-            Scrollbar(
-              controller: _scrollController,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                controller: _scrollController,
-                child: Table(
-                  border: TableBorder.all(color: colors.umber.withOpacity(0.1)),
-                  columnWidths: const <int, TableColumnWidth>{
-                    0: FixedColumnWidth(100),
-                    1: FlexColumnWidth(),
-                    2: FixedColumnWidth(100),
-                    3: FlexColumnWidth(),
-                    4: FlexColumnWidth(),
-                    5: FixedColumnWidth(150),
-                    6: FixedColumnWidth(150),
-                    7: FixedColumnWidth(150),
-                    8: FixedColumnWidth(150),
-                  },
-                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                  children: <TableRow>[
-                    TableRow(
-                      children: <Widget>[
-                        TableCell(child: Padding(
-                          padding: EdgeInsetsGeometry.symmetric(vertical: 10),
-                          child: Center(child: Text('ID',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold),)),
-                        )),
-                        TableCell(child: Center(child: Text('Name',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                        TableCell(child: Center(child: Text('Age',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                        TableCell(child: Center(child: Text('School ID',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                        TableCell(child: Center(child: Text('Department',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                        TableCell(child: Center(child: Text('Year',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                        TableCell(child: Center(child: Text('Section',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                        TableCell(child: Center(child: Text('Log date',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                        TableCell(child: Center(child: Text('Log time',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+    return StreamBuilder(
+      stream: attendanceModel.subject,
+      builder: (context, snapshot) {
+        return Scaffold(
+            appBar: AppBar(
+                elevation: 1,
+                shadowColor: Colors.grey.shade200,
+                centerTitle: false,
+                backgroundColor: Colors.white,
+                flexibleSpace: Appbar(title: "LOGBOOKS", onchange: (text){
+                  setState(() {
+                    // _logbooks = _toSearch!.where((s) => s["name"].toString().toLowerCase().contains(text.toLowerCase())).toList();
+                  });
+                }, onPrint: ()async{
+                  _createExcel(datas: snapshot.data!);
+                },onAdd: (){},
+                  datePicker: IconButton(
+                    icon: Icon(Icons.date_range, color: colors.umber,),
+                    onPressed: () {
+                      _selectMonth(context);
+                    },
+                  ),
+                  filterWidget: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          Colors.white),
+                    ),
+                    onPressed: () async {
+                      await showDialog<void>(
+                          context: context,
+                          builder: (context) =>
+                              AlertDialog(
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20.0))
+                                  ),
+                                  content: Filter(
+                                    onConfirm: (v) {
+                                      List _res = attendanceModel.valueSearch.where((s) => s.last["department"] == v["department"] && s.last["course"] == v["selected_section"]).toList();
+                                      attendanceModel.update(data: _res);
+                                    },
+                                  )
+                              )
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        Text("Filter", style: TextStyle(
+                            fontFamily: "OpenSans",
+                            fontWeight: FontWeight.w600,
+                            color: colors.umber),),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Icon(
+                          Icons.arrow_drop_down_sharp, color: colors.umber,)
                       ],
                     ),
-                    for(int x = 0; x < _logbooks!.length; x++)...{
-                      TableRow(
-                        decoration: BoxDecoration(
-                            color: Colors.white
-                        ),
-                        children: <Widget>[
-                          TableCell(child: Padding(
-                            padding: EdgeInsetsGeometry.symmetric(vertical: 10),
-                            child: Center(child: Text('${_logbooks![x]["id"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,)),
-                          )),
-                          TableCell(child: Center(child: Text('${_logbooks![x]["name"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                          TableCell(child: Center(child: Text('${_logbooks![x]["age"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                          TableCell(child: Center(child: Text('${_logbooks![x]["school_id"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                          TableCell(child: Center(child: Text('${_logbooks![x]["department"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                          TableCell(child: Center(child: Text('${_logbooks![x]["year"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                          TableCell(child: Center(child: Text('${_logbooks![x]["section"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                          TableCell(child: Center(child: Text('${_logbooks![x]["log_date"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                          TableCell(child: Center(child: Text('${_logbooks![x]["log_time"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                  ),
+                )
+            ),
+            backgroundColor: Colors.white,
+            body: !snapshot.hasData ?
+            TableLoader() :
+            snapshot.data!.isEmpty ?
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  NoDataWidget(),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  SizedBox(
+                      height: 45,
+                      width: 300,
+                      child: _materialbutton.materialButton("Refresh", (){
+                        attendanceModel.update(data: attendanceModel.valueSearch);
+                      })
+                  )
+                ],
+              ),
+            ) :
+            Stack(
+              children: [
+                RepaintBoundary(
+                  key: _printKey,
+                  child: Scrollbar(
+                    controller: _scrollController,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      controller: _scrollController,
+                      child: Table(
+                        border: TableBorder.all(color: colors.umber.withOpacity(0.1)),
+                        columnWidths: const <int, TableColumnWidth>{
+                          0: FixedColumnWidth(100),
+                          1: FlexColumnWidth(),
+                          2: FixedColumnWidth(100),
+                          3: FlexColumnWidth(),
+                          4: FlexColumnWidth(),
+                          5: FixedColumnWidth(150),
+                          6: FixedColumnWidth(150),
+                          7: FixedColumnWidth(200),
+                          8: FixedColumnWidth(200),
+                        },
+                        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                        children: <TableRow>[
+                          TableRow(
+                            children: <Widget>[
+                              TableCell(child: Padding(
+                                padding: EdgeInsetsGeometry.symmetric(vertical: 10),
+                                child: Center(child: Text('ID',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold),)),
+                              )),
+                              TableCell(child: Center(child: Text('Name',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                              TableCell(child: Center(child: Text('Age',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                              TableCell(child: Center(child: Text('School ID',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                              TableCell(child: Center(child: Text('Department',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                              TableCell(child: Center(child: Text('Year',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                              TableCell(child: Center(child: Text('Section',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                              TableCell(child: Center(child: Text('Log In',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                              TableCell(child: Center(child: Text('Log Out',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                            ],
+                          ),
+                          for(int x = 0; x < snapshot.data!.length; x++)...{
+                            TableRow(
+                              decoration: BoxDecoration(
+                                  color: Colors.white
+                              ),
+                              children: <Widget>[
+                                TableCell(child: Padding(
+                                  padding: EdgeInsetsGeometry.symmetric(vertical: 10),
+                                  child: Center(child: Text('${x+1}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,)),
+                                )),
+                                TableCell(child: Center(child: Text('${snapshot.data![x].last["name"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                                TableCell(child: Center(child: Text('${snapshot.data![x].last["age"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                                TableCell(child: Center(child: Text('${snapshot.data![x].last["school_id"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                                TableCell(child: Center(child: Text('${snapshot.data![x].last["department"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                                TableCell(child: Center(child: Text('${snapshot.data![x].last["year"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                                TableCell(child: Center(child: Text('${snapshot.data![x].last["section"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                                TableCell(child: Center(child: Text('${DateFormat("dd MMM yyyy h:mm").format(DateTime.parse(snapshot.data![x].first["date_time"]))}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                                TableCell(child: Center(child: Text('${DateFormat("dd MMM yyyy h:mm").format(DateTime.parse(snapshot.data![x][1]["date_time"]))}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                              ],
+                            ),
+                          }
                         ],
                       ),
-                    }
-                  ],
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ],
-        )
+              ],
+            )
+        );
+      }
     );
+  }
+
+  Future _createExcel({required List datas}) async {
+    final excel = Excel.createExcel();
+    final sheet = excel['Logbooks'];
+    sheet.appendRow([
+      TextCellValue("ID"),
+      TextCellValue("Name"),
+      TextCellValue("Age"),
+      TextCellValue("School ID"),
+      TextCellValue("Department"),
+      TextCellValue("Year"),
+      TextCellValue("Section"),
+      TextCellValue("Log In"),
+      TextCellValue("Log Out"),
+    ]);
+    for(int x = 0; x < datas.length; x++){
+      sheet.appendRow([
+        TextCellValue("${x+1}"),
+        TextCellValue("${usersModel.value.where((s) => s["school_id"] == datas[x].first["school_id"]).toList().first["name"]}"),
+        TextCellValue("${usersModel.value.where((s) => s["school_id"] == datas[x].first["school_id"]).toList().first["age"]}"),
+        TextCellValue("${usersModel.value.where((s) => s["school_id"] == datas[x].first["school_id"]).toList().first["school_id"]}"),
+        TextCellValue("${usersModel.value.where((s) => s["school_id"] == datas[x].first["school_id"]).toList().first["department"]}"),
+        TextCellValue("${usersModel.value.where((s) => s["school_id"] == datas[x].first["school_id"]).toList().first["year"]}"),
+        TextCellValue("${usersModel.value.where((s) => s["school_id"] == datas[x].first["school_id"]).toList().first["section"]}"),
+        TextCellValue("${DateFormat("dd MMM yyyy h:mm").format(DateTime.parse(datas[x].first["date_time"]))}"),
+        TextCellValue("${DateFormat("dd MMM yyyy h:mm").format(DateTime.parse(datas[x].last["date_time"]))}"),
+      ]);
+    }
+
+    final fileBytes = excel.encode()!;
+    final content = base64Encode(fileBytes);
+    final anchor = html.AnchorElement(
+      href: "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,$content",
+    )
+      ..setAttribute("download", "logbooks.xlsx")
+      ..click();
+  }
+
+  Future<void> _selectMonth(BuildContext context) async {
+    final picked = await showMonthPicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (picked != null) {
+      List _res = attendanceModel.valueSearch.where((s) => DateFormat.yMMM().format(DateTime.parse(s.first["date_time"])) == DateFormat.yMMM().format(picked)).toList();
+      attendanceModel.update(data: _res);
+    }
   }
 }
 

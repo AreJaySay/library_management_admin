@@ -1,5 +1,12 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:library_book/functions/loaders.dart';
 import 'package:library_book/screens/widgets/button.dart';
+import 'package:library_book/services/apis/users.dart';
+import 'package:library_book/utils/snackbars/snackbar_message.dart';
 
 import '../../../utils/palettes/app_colors.dart' hide Colors;
 
@@ -11,13 +18,34 @@ class EditUserModal extends StatefulWidget {
 }
 
 class _EditUserModalState extends State<EditUserModal> {
+  final SnackbarMessage _snackbarMessage = new SnackbarMessage();
   final Materialbutton _materialbutton = new Materialbutton();
+  final ScreenLoaders _screenLoaders = new ScreenLoaders();
+  final UsersApi _usersApi = new UsersApi();
   final TextEditingController _name = TextEditingController();
   final TextEditingController _age = TextEditingController();
   final TextEditingController _schoolid = TextEditingController();
+  final TextEditingController _email = TextEditingController();
   String _department = "";
   String _year = "";
   String _section = "";
+  Uint8List? _pickedImageBytes;
+  String _base64 = "";
+
+  Future<String?> _convertBase64() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      Uint8List? fileBytes = result.files.first.bytes;
+      if (fileBytes != null) {
+        setState(() {
+          _base64 = base64Encode(fileBytes);
+          _pickedImageBytes = result.files.first.bytes;
+          print("GET IMAGE BYTE $_pickedImageBytes");
+        });
+      }
+    }
+    return null;
+  }
 
   @override
   void initState() {
@@ -25,9 +53,12 @@ class _EditUserModalState extends State<EditUserModal> {
     _name.text = widget.details["name"];
     _age.text = "${widget.details["age"]}";
     _schoolid.text = "${widget.details["school_id"]}";
+    _email.text = "${widget.details["email"]}";
     _department = widget.details["department"];
     _year = "${widget.details["year"]} year";
     _section = widget.details["section"];
+    _base64 = widget.details!["base64Image"];
+    _pickedImageBytes = widget.details!["base64Image"] == "" ? null : base64Decode(widget.details!["base64Image"]);
     super.initState();
   }
 
@@ -56,17 +87,42 @@ class _EditUserModalState extends State<EditUserModal> {
                 SizedBox(
                   height: 30,
                 ),
-                CircleAvatar(
-                  minRadius: 50,
-                  maxRadius: 60,
-                  backgroundImage: NetworkImage(widget.details["profile"] == "" ? "https://cdn-icons-png.freepik.com/512/8742/8742495.png" : '${widget.details["profile"]}'),
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: CircleAvatar(
-                      backgroundColor: colors.coffee,
-                      child: Icon(Icons.edit,color: colors.umber,),
-                    )
-                  )
+                Center(
+                  child: CircleAvatar(
+                      minRadius: 50,
+                      maxRadius: 70,
+                      backgroundColor: Colors.grey.shade100,
+                      child: Stack(
+                        children: [
+                          Center(
+                            child: _pickedImageBytes != null ?
+                            Image.memory(
+                              _pickedImageBytes!,
+                              width: 60,
+                              height: 110,
+                              fit: BoxFit.cover,
+                            ) :
+                            Image(
+                              image: NetworkImage("https://cdn-icons-png.freepik.com/512/8742/8742495.png"),
+                              width: 130,
+                              height: 130,
+                            ),
+                          ),
+                          Align(
+                              alignment: Alignment.bottomRight,
+                              child: GestureDetector(
+                                onTap: () async{
+                                  _convertBase64();
+                                },
+                                child: CircleAvatar(
+                                  backgroundColor: colors.coffee,
+                                  child: Icon(Icons.edit,color: colors.umber,),
+                                ),
+                              )
+                          ),
+                        ],
+                      )
+                  ),
                 ),
                 SizedBox(
                   height: 50,
@@ -120,6 +176,33 @@ class _EditUserModalState extends State<EditUserModal> {
                   onChanged: (text) {
 
                   },
+                ),
+                TextField(
+                  controller: _email,
+                  style: TextStyle(fontFamily: "OpenSans"),
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    hintText: 'Email address',
+                    prefixIcon: Icon(Icons.calendar_month),
+                    hintStyle: TextStyle(fontFamily: "OpenSans",color: Colors.grey),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(1000)
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(1000),
+                      borderSide: BorderSide(color: colors.umber.withOpacity(0.1)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(1000),
+                      borderSide: BorderSide(color: colors.umber.withOpacity(0.4)),
+                    ),
+                  ),
+                  onChanged: (text) {
+
+                  },
+                ),
+                SizedBox(
+                  height: 15,
                 ),
                 SizedBox(
                   height: 15,
@@ -298,7 +381,27 @@ class _EditUserModalState extends State<EditUserModal> {
                 ),
                 Spacer(),
                 _materialbutton.materialButton("Update", (){
-
+                  if(_name.text.isEmpty || _age.text.isEmpty || _schoolid.text.isEmpty || _department == "" || _department == "" || _section == ""){
+                    _snackbarMessage.snackbarMessage(context, message: "All fields are required.", is_error: true);
+                  }else{
+                    Map _payload = {
+                      "name": _name.text,
+                      "age": _age.text,
+                      "email": _email.text,
+                      "school_id": _schoolid.text,
+                      "department": _department,
+                      "year": _year,
+                      "section": _section,
+                      "base64Image": _base64,
+                      "password": widget.details["password"]
+                    };
+                    _screenLoaders.functionLoader(context);
+                    _usersApi.edit(id: widget.details["id"], payload: _payload).whenComplete((){
+                      Navigator.of(context).pop(null);
+                      Navigator.of(context).pop(null);
+                      _snackbarMessage.snackbarMessage(context, message: "Book details updated successfully!");
+                    });
+                  }
                 }),
                 SizedBox(
                   height: 20,

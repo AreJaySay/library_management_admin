@@ -6,7 +6,7 @@ import '../../models/users.dart';
 class BorrowersApi{
   FirebaseDatabase database = FirebaseDatabase.instance;
 
-  Future getBorrowers() async {
+  Future get() async {
     DatabaseReference ref = FirebaseDatabase.instance.ref('borrow');
     ref.onValue.listen((DatabaseEvent event) {
       final dataSnapshot = event.snapshot;
@@ -24,12 +24,10 @@ class BorrowersApi{
     });
   }
 
-  Future updateStatus({required String book_id, required String status})async{
-    DatabaseReference usersRef = database.ref('borrow');
-    FirebaseDatabase.instance.ref().child('borrow').orderByChild("book_id").equalTo(book_id).onChildAdded.forEach((event)async{
-      await usersRef.update({
-        "${event.snapshot.key!}/status": status,
-      });
+  Future settle({required String id})async{
+    FirebaseDatabase.instance.ref().child('borrow').orderByChild("id").equalTo(id).onChildAdded.forEach((event)async{
+      DatabaseReference ref = FirebaseDatabase.instance.ref("borrow/${event.snapshot.key!}");
+      await ref.remove();
     });
   }
 }

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_side_menu/flutter_side_menu.dart';
 import 'package:intl/intl.dart';
+import 'package:library_book/models/notifications.dart';
 import 'package:library_book/models/page_navigators.dart';
 import 'package:library_book/screens/books/books.dart';
 import 'package:library_book/screens/logbooks/logbooks.dart';
 import 'package:library_book/screens/notifications/notifications.dart';
 import 'package:library_book/screens/users/users.dart';
+import 'package:library_book/services/apis/notifications.dart';
 import 'package:library_book/utils/palettes/app_colors.dart' hide Colors;
+
+import '../utils/snackbars/notification_modal.dart';
 
 class Landing extends StatefulWidget {
   @override
@@ -15,6 +19,7 @@ class Landing extends StatefulWidget {
 
 class _LandingState extends State<Landing> {
   final SideMenuController _sideMenuController = SideMenuController();
+  final NotificationApis _notificationApis = new NotificationApis();
   List<String> _title = ["Students","Logbooks","Books"];
   List<String> _icons = ["users","logbooks","books"];
   List<Widget> _pages = [Users(),LogBooks(),Books()];
@@ -25,6 +30,8 @@ class _LandingState extends State<Landing> {
   void initState() {
     // TODO: implement initState
     pageNavigatorsModel.update(data: false);
+    _notificationApis.get();
+    _notificationChecker();
     super.initState();
   }
 
@@ -43,29 +50,10 @@ class _LandingState extends State<Landing> {
             builder: (data) => SideMenuData(
               header: Padding(
                 padding: EdgeInsets.only(left: 20, right: 20, top: 20,bottom: 30),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundImage: AssetImage("assets/logos/main_logo.png"),
-                    ),
-                    if(!_isCollapsed)...{
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: RichText(
-                          text: TextSpan(
-                            text: "SSU",
-                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15,fontFamily: "OpenSans"),
-                            children: <TextSpan>[
-                              TextSpan(text: ' Library Management \nwith', style: TextStyle(fontSize: 15,fontFamily: "OpenSans",fontWeight: FontWeight.w400)),
-                              TextSpan(text: ' RFID', style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15,fontFamily: "OpenSans")),
-                            ],
-                          ),
-                        ),
-                      ),
-                    }
-                  ],
+                child: CircleAvatar(
+                  maxRadius: 60,
+                  minRadius: 40,
+                  backgroundImage: AssetImage("assets/logos/ssu_logo.png"),
                 ),
               ),
               items: [
@@ -129,5 +117,18 @@ class _LandingState extends State<Landing> {
         ],
       ),
     );
+  }
+  void _notificationChecker(){
+    Future.delayed(const Duration(seconds: 10), () {
+      _notificationApis.get().whenComplete((){
+        List _res = notificationModel.value.where((s) => s["is_showed"] == "0").toList();
+        if(_res.isNotEmpty){
+          print("NOTIFICATIONS SHOW NOW ${_res.first}");
+          notificationModal.showNotificModal(context, "${_res.first["content"]}");
+          _notificationApis.showed(id: _res.first["id"]);
+        }
+        _notificationChecker();
+      });
+    });
   }
 }

@@ -13,5 +13,9 @@ class BooksModel{
   BehaviorSubject<List> search = new BehaviorSubject();
   Stream get streamSearch => search.stream;
   List get valueSearch => search.value;
+
+  updateSearch({required List data}){
+    search.add(data);
+  }
 }
 final BooksModel booksModel = new BooksModel();

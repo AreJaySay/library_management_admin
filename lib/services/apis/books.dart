@@ -1,12 +1,12 @@
+
 import 'package:firebase_database/firebase_database.dart';
-import 'package:library_book/models/books.dart';
-import 'package:library_book/screens/books/components/add_book.dart';
-import '../../models/users.dart';
+
+import '../../models/books.dart';
 
 class BooksApi{
   FirebaseDatabase database = FirebaseDatabase.instance;
 
-  Future addBook({required Map payload})async{
+  Future add({required Map payload})async{
     DatabaseReference usersRef = database.ref('books');
     await usersRef.push().set({
       "subject": payload["subject"],
@@ -25,7 +25,7 @@ class BooksApi{
     });
   }
 
-  Future editBook({required String old_isbn,required Map payload})async{
+  Future edit({required String old_isbn,required Map payload})async{
     DatabaseReference usersRef = database.ref('books');
     FirebaseDatabase.instance.ref().child('books').orderByChild("isbn").equalTo(old_isbn).onChildAdded.forEach((event)async{
       await usersRef.update({
@@ -46,14 +46,14 @@ class BooksApi{
     });
   }
 
-  Future deleteBook({required String isbn})async{
+  Future delete({required String isbn})async{
     FirebaseDatabase.instance.ref().child('books').orderByChild("isbn").equalTo(isbn).onChildAdded.forEach((event)async{
       DatabaseReference ref = FirebaseDatabase.instance.ref("books/${event.snapshot.key!}");
       await ref.remove();
     });
   }
 
-  Future getBooks() async {
+  Future get() async {
     DatabaseReference ref = FirebaseDatabase.instance.ref('books');
     ref.onValue.listen((DatabaseEvent event) {
       final dataSnapshot = event.snapshot;
@@ -61,12 +61,15 @@ class BooksApi{
         final data = dataSnapshot.value;
         if (data is Map) {
           booksModel.update(data: data.values.toList());
+          booksModel.updateSearch(data: data.values.toList());
           print("BOOKS ${data.values.toList()}");
         } else if (data is List) {
           booksModel.update(data: data);
+          booksModel.updateSearch(data: data);
         }
       } else {
         booksModel.update(data: []);
+        booksModel.updateSearch(data: []);
       }
     });
   }

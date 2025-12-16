@@ -567,13 +567,13 @@ class _AddBookState extends State<AddBook> {
                   };
                   _screenLoaders.functionLoader(context);
                   if(widget.details != null){
-                    _booksApi.editBook(old_isbn: widget.details!["isbn"], payload: _payload).whenComplete((){
+                    _booksApi.edit(old_isbn: widget.details!["isbn"], payload: _payload).whenComplete((){
                       Navigator.of(context).pop(null);
                       Navigator.of(context).pop(null);
                       _snackbarMessage.snackbarMessage(context, message: "Book details updated successfully!");
                     });
                   }else{
-                    _booksApi.addBook(payload: _payload).whenComplete((){
+                    _booksApi.add(payload: _payload).whenComplete((){
                       Navigator.of(context).pop(null);
                       Navigator.of(context).pop(null);
                       _snackbarMessage.snackbarMessage(context, message: "New book successfully created!");
