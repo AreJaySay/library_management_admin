@@ -58,6 +58,8 @@ class _LogBooksState extends State<LogBooks> {
                 flexibleSpace: Appbar(title: "LOGBOOKS", onchange: (text){
                   setState(() {
                     // _logbooks = _toSearch!.where((s) => s["name"].toString().toLowerCase().contains(text.toLowerCase())).toList();
+                    List _res = attendanceModel.valueSearch.where((s) => s.last["name"].toString().toLowerCase().contains(text.toLowerCase())).toList();
+                    attendanceModel.update(data: _res);
                   });
                 }, onPrint: ()async{
                   _createExcel(datas: snapshot.data!);
