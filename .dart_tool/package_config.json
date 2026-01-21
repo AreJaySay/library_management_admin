@@ -254,6 +254,12 @@
       "languageVersion": "3.8"
     },
     {
+      "name": "flutter_date_pickers",
+      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/flutter_date_pickers-0.4.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
       "name": "flutter_image_compress",
       "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/flutter_image_compress-2.4.0",
       "packageUri": "lib/",
@@ -741,8 +747,8 @@
     }
   ],
   "generator": "pub",
-  "generatorVersion": "3.10.1",
+  "generatorVersion": "3.10.7",
   "flutterRoot": "file:///Users/rolandoc./Documents/flutter",
-  "flutterVersion": "3.38.3",
+  "flutterVersion": "3.38.7",
   "pubCache": "file:///Users/rolandoc./.pub-cache"
 }

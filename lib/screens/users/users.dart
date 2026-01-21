@@ -241,7 +241,7 @@ class _UsersState extends State<Users> {
                                       padding: const EdgeInsets.all(5.0),
                                       child: Center(
                                           child: snapshot
-                                              .data![x]["base64Image"] != "" ?
+                                              .data![x]["base64Image"] != "" && snapshot.data![x]["base64Image"] != null ?
                                           Container(
                                               width: 40,
                                               height: 40,
@@ -252,14 +252,7 @@ class _UsersState extends State<Users> {
                                                           base64Decode(snapshot
                                                               .data![x]["base64Image"]))
                                                   )
-                                              ))
-                                          // Image.memory(
-                                          //   base64Decode(snapshot.data![x]["base64Image"]),
-                                          //   width: 35,
-                                          //   height: 55,
-                                          //   fit: BoxFit.fill,
-                                          // )
-                                              :
+                                              )):
                                           Center(child: CircleAvatar(
                                               backgroundImage: NetworkImage(
                                                   "https://cdn-icons-png.freepik.com/512/8742/8742495.png")
@@ -267,12 +260,6 @@ class _UsersState extends State<Users> {
                                       ),
                                     ),
                                   ),
-                                  // TableCell(child: Padding(
-                                  //   padding: const EdgeInsets.all(5.0),
-                                  //   child: Center(child: CircleAvatar(
-                                  //     backgroundImage: NetworkImage(snapshot.data![x]["profile"] == "" ? "https://cdn-icons-png.freepik.com/512/8742/8742495.png" : "${snapshot.data![x]["profile"]}")
-                                  //   )),
-                                  // )),
                                   TableCell(child: Center(child: Text(
                                     '${snapshot.data![x]["name"]}',
                                     style: TextStyle(

@@ -7,6 +7,7 @@ import 'package:library_book/functions/loaders.dart';
 import 'package:library_book/models/reservations.dart';
 import 'package:library_book/screens/users/components/edit_user_modal.dart';
 import 'package:library_book/screens/widgets/appbar.dart';
+import 'package:library_book/services/apis/notifications.dart';
 import 'package:library_book/services/apis/reservations.dart';
 import 'package:library_book/services/routes.dart';
 import 'package:library_book/utils/palettes/app_colors.dart' hide Colors;
@@ -21,6 +22,7 @@ class Reservations extends StatefulWidget {
 class _ReservationsState extends State<Reservations> {
   final _scrollController = ScrollController();
   final ReservationApis _reservationApis = new ReservationApis();
+  final NotificationApis _notificationApis = new NotificationApis();
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   final SnackbarMessage _snackbarMessage = new SnackbarMessage();
 
@@ -133,8 +135,6 @@ class _ReservationsState extends State<Reservations> {
                             MenuItems.onChanged(context, value! as MenuItem);
                             if(value.text == "Accept"){
                               _accept(details: snapshot.data![x]);
-                            }else{
-
                             }
                           },
                           dropdownStyleData: DropdownStyleData(
@@ -190,6 +190,7 @@ class _ReservationsState extends State<Reservations> {
                 _reservationApis.accept(details: details).whenComplete((){
                   _reservationApis.delete(id: details["id"]);
                   Navigator.of(context).pop(null);
+                  _notificationApis.add(payload: details, type: "borrow_accepted", content: "Request to borrow is accepted by admin!");
                   _snackbarMessage.snackbarMessage(context, message: "Successfully accepted reservation!");
                 });
               },

@@ -8,8 +8,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:library_book/models/image_base64.dart';
+import 'package:library_book/screens/notifications/notifications.dart';
 import 'package:library_book/screens/widgets/button.dart';
 import 'package:library_book/services/apis/books.dart';
+import 'package:library_book/services/apis/notifications.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../../functions/loaders.dart';
 import '../../../utils/palettes/app_colors.dart' hide Colors;
@@ -28,6 +30,7 @@ class AddBook extends StatefulWidget {
 class _AddBookState extends State<AddBook> {
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   final SnackbarMessage _snackbarMessage = new SnackbarMessage();
+  final NotificationApis _notificationApis = new NotificationApis();
   final FirebaseStorage _storage = FirebaseStorage.instance;
   final BooksApi _booksApi = new BooksApi();
   final Materialbutton _materialbutton = new Materialbutton();
@@ -565,7 +568,7 @@ class _AddBookState extends State<AddBook> {
                     "categories": _finalCategories,
                     "base64Image": _base64,
                   };
-                  _screenLoaders.functionLoader(context);
+                  // _screenLoaders.functionLoader(context);
                   if(widget.details != null){
                     _booksApi.edit(old_isbn: widget.details!["isbn"], payload: _payload).whenComplete((){
                       Navigator.of(context).pop(null);
@@ -573,9 +576,11 @@ class _AddBookState extends State<AddBook> {
                       _snackbarMessage.snackbarMessage(context, message: "Book details updated successfully!");
                     });
                   }else{
+                    print(_payload);
                     _booksApi.add(payload: _payload).whenComplete((){
                       Navigator.of(context).pop(null);
                       Navigator.of(context).pop(null);
+                      _notificationApis.add(payload: _payload, type: "book_added", content: "New book added on the list, check it out now!");
                       _snackbarMessage.snackbarMessage(context, message: "New book successfully created!");
                     });
                   }

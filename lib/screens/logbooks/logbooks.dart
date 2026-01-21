@@ -24,6 +24,7 @@ import '../../widgets/no_data_widget.dart';
 import '../users/components/filters.dart';
 import '../widgets/button.dart';
 import '../widgets/shimmer_loader/table.dart';
+import 'components/date_type.dart';
 
 class LogBooks extends StatefulWidget {
   @override
@@ -66,8 +67,19 @@ class _LogBooksState extends State<LogBooks> {
                 },onAdd: (){},
                   datePicker: IconButton(
                     icon: Icon(Icons.date_range, color: colors.umber,),
-                    onPressed: () {
-                      _selectMonth(context);
+                    onPressed: () async{
+                      await showDialog<void>(
+                          context: context,
+                          builder: (context) =>
+                              AlertDialog(
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20.0))
+                                  ),
+                                  content: DateType()
+                              )
+                      );
                     },
                   ),
                   filterWidget: ElevatedButton(
@@ -241,20 +253,6 @@ class _LogBooksState extends State<LogBooks> {
     )
       ..setAttribute("download", "logbooks.xlsx")
       ..click();
-  }
-
-  Future<void> _selectMonth(BuildContext context) async {
-    final picked = await showMonthPicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
-
-    if (picked != null) {
-      List _res = attendanceModel.valueSearch.where((s) => DateFormat.yMMM().format(DateTime.parse(s.first["date_time"])) == DateFormat.yMMM().format(picked)).toList();
-      attendanceModel.update(data: _res);
-    }
   }
 }
 

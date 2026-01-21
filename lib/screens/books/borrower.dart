@@ -122,11 +122,14 @@ class _BorrowerState extends State<Borrower> {
                       TableCell(child: Center(child: Text('${jsonDecode(snapshot.data![x]["book_information"])["title"]}',style: TextStyle(fontFamily: "Roboto_normal",),textAlign: TextAlign.center,maxLines: 3,))),
                       TableCell(child: Center(child: Text('${DateFormat("MMM dd, yyyy").format(DateTime.parse(snapshot.data![x]["borrow_details"]["borrow_date"]))}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
                       TableCell(child: Center(child: Text('${DateFormat("MMM dd, yyyy").format(DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]))}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                      TableCell(child: Center(child: Text('${DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]).difference(DateTime.now()).inDays < 0 ?
-                      "Over Due"
-                      : DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]).difference(DateTime.now()).inDays == 0 ?
-                      "Due Today"
-                      : "--"}',style: TextStyle(fontFamily: "Roboto_normal" , color: DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]).difference(DateTime.now()).inDays < 0 ? Colors.red : DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]).difference(DateTime.now()).inDays == 0 ? Colors.orange : colors.coffee),textAlign: TextAlign.center,))),
+                      TableCell(child: Center(child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('${DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]).difference(DateTime.now()).inDays < 0 ?
+                        "Over Due"
+                        : DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]).difference(DateTime.now()).inDays == 0 ?
+                        "Due Today/Tomorrow"
+                        : "--"}',style: TextStyle(fontFamily: "Roboto_normal" , color: DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]).difference(DateTime.now()).inDays < 0 ? Colors.red : DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]).difference(DateTime.now()).inDays == 0 ? Colors.orange : colors.coffee),textAlign: TextAlign.center,),
+                      ))),
                       TableCell(child: Center(
                         child: IconButton(
                           icon: Icon(Icons.more_vert),
