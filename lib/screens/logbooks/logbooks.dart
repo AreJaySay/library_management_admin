@@ -241,8 +241,8 @@ class _LogBooksState extends State<LogBooks> {
         TextCellValue("${usersModel.value.where((s) => s["school_id"] == datas[x].first["school_id"]).toList().first["department"]}"),
         TextCellValue("${usersModel.value.where((s) => s["school_id"] == datas[x].first["school_id"]).toList().first["year"]}"),
         TextCellValue("${usersModel.value.where((s) => s["school_id"] == datas[x].first["school_id"]).toList().first["section"]}"),
-        TextCellValue("${DateFormat("dd MMM yyyy h:mm").format(DateTime.parse(datas[x].first["date_time"]))}"),
-        TextCellValue("${DateFormat("dd MMM yyyy h:mm").format(DateTime.parse(datas[x].last["date_time"]))}"),
+        TextCellValue("${datas[x].first["date_time"] == null ? "--" : DateFormat("dd MMM yyyy h:mm").format(DateTime.parse(datas[x].first["date_time"]))}"),
+        TextCellValue("${datas[x].last["date_time"] == null ? "--" : DateFormat("dd MMM yyyy h:mm").format(DateTime.parse(datas[x].last["date_time"]))}"),
       ]);
     }
 

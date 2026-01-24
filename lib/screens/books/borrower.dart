@@ -241,6 +241,7 @@ class _BorrowerState extends State<Borrower> {
                 backgroundColor: MaterialStateProperty.all(colors.umber),
               ),
               onPressed: () {
+                print(id);
                 _borrowersApi.settle(id: id).whenComplete((){
                   Navigator.of(context).pop(null);
                   Navigator.of(context).pop(null);

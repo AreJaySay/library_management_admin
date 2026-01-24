@@ -13,7 +13,7 @@ class BorrowersApi{
       if (dataSnapshot.exists) {
         final data = dataSnapshot.value;
         if (data is Map) {
-          borrowersModel.update(data: data.values.toList());
+          borrowersModel.update(data: data.values.toList().where((s) => s["status"] == "Accepted").toList());
           print("BORROWERS ${data.values.toList()}");
         } else if (data is List) {
           borrowersModel.update(data: data);
@@ -25,9 +25,11 @@ class BorrowersApi{
   }
 
   Future settle({required String id})async{
+    DatabaseReference usersRef = database.ref('borrow');
     FirebaseDatabase.instance.ref().child('borrow').orderByChild("id").equalTo(id).onChildAdded.forEach((event)async{
-      DatabaseReference ref = FirebaseDatabase.instance.ref("borrow/${event.snapshot.key!}");
-      await ref.remove();
+      await usersRef.update({
+        "${event.snapshot.key!}/status": "Returned",
+      });
     });
   }
 }
