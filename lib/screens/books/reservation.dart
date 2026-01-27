@@ -135,6 +135,8 @@ class _ReservationsState extends State<Reservations> {
                             MenuItems.onChanged(context, value! as MenuItem);
                             if(value.text == "Accept"){
                               _accept(details: snapshot.data![x]);
+                            }else{
+                              _decline(details: snapshot.data![x]);
                             }
                           },
                           dropdownStyleData: DropdownStyleData(
@@ -187,7 +189,7 @@ class _ReservationsState extends State<Reservations> {
                 backgroundColor: MaterialStateProperty.all(colors.umber),
               ),
               onPressed: () {
-                _reservationApis.accept(details: details).whenComplete((){
+                _reservationApis.action(details: details, status: "Accepted").whenComplete((){
                   _reservationApis.delete(id: details["id"]);
                   Navigator.of(context).pop(null);
                   _notificationApis.add(payload: details, type: "borrow_accepted", content: "Request to borrow is accepted by admin!");
@@ -195,6 +197,43 @@ class _ReservationsState extends State<Reservations> {
                 });
               },
               child: Text('Confirm',style: TextStyle(fontFamily: "OpenSans", color: Colors.white),),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _decline({required Map details}){
+    bool _isLoading = false;
+
+    showDialog(
+      context: context,
+      barrierDismissible: false, // User must interact with buttons
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmation',style: TextStyle(fontFamily: "OpenSans",fontWeight: FontWeight.w500),),
+          content: Text('Are you sure you want to decline this reservation?',style: TextStyle(fontFamily: "OpenSans"),),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel',style: TextStyle(fontFamily: "OpenSans", color: Colors.black54),),
+            ),
+            ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(colors.umber),
+              ),
+              onPressed: () {
+                _reservationApis.action(details: details, status: "Declined").whenComplete((){
+                  _reservationApis.delete(id: details["id"]);
+                  Navigator.of(context).pop(null);
+                  _notificationApis.add(payload: details, type: "borrow_declined", content: "Request to borrow is declined by admin!");
+                  _snackbarMessage.snackbarMessage(context, message: "Successfully declined reservation!");
+                });
+              },
+              child: Text('Decline',style: TextStyle(fontFamily: "OpenSans", color: Colors.white),),
             ),
           ],
         );

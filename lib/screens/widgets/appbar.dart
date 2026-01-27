@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:library_book/models/notifications.dart';
 import 'package:library_book/models/page_navigators.dart';
+import 'package:library_book/services/apis/admin.dart';
 import 'package:library_book/services/routes.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../credentials/login.dart';
 import '../../models/users.dart';
@@ -33,8 +35,9 @@ class _AppbarState extends State<Appbar> {
   final TextEditingController _email = new TextEditingController();
   final TextEditingController _phone = new TextEditingController();
   final Materialbutton _materialbutton = new Materialbutton();
+  final AdminApis _adminApis = new AdminApis();
   String _gender = "";
-  Uint8List? _pickedImageBytes;
+  // Uint8List? _pickedImageBytes;
   final Routes _routes = new Routes();
   DateTime _currentTime = DateTime.now();
   Timer? _timer;
@@ -55,7 +58,10 @@ class _AppbarState extends State<Appbar> {
     _email.text = usersModel.loggedUser.value["email"];
     _phone.text = usersModel.loggedUser.value["phone"];
     _gender = usersModel.loggedUser.value["gender"];
-    _pickedImageBytes = usersModel.loggedUser.value["base64Image"] != "" ? base64Decode(usersModel.loggedUser.value["base64Image"]) : null;
+    // if(usersModel.loggedUser.value["base64Image"] != ""){
+      uploadPict.update(data: base64Decode(usersModel.loggedUser.value["base64Image"] ?? null));
+    // }else{}
+    // _pickedImageBytes = usersModel.loggedUser.value["base64Image"] != "" ? base64Decode(usersModel.loggedUser.value["base64Image"]) : null;
   }
 
   @override
@@ -260,11 +266,23 @@ class _AppbarState extends State<Appbar> {
                       height: 35,
                       width: 35,
                       child: CircleAvatar(
-                        backgroundImage: NetworkImage("https://cdn-icons-png.freepik.com/512/8742/8742495.png"),
+                        child: usersModel.loggedUser.value["base64Image"]!= "" ?
+                        Image.memory(
+                          base64Decode(usersModel.loggedUser.value["base64Image"]),
+                          width: 35,
+                          height: 55,
+                          fit: BoxFit.fill,
+                        ) :
+                        Image(
+                          image: AssetImage("assets/icons/book.png"),
+                          width: 50,
+                          height: 50,
+                          color: Colors.grey.shade400,
+                        ),
+                      ),
                       ),
                     ),
                   ),
-                ),
                 SizedBox(
                   width: 20,
                 ),
@@ -294,36 +312,43 @@ class _AppbarState extends State<Appbar> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
-                    child: CircleAvatar(
-                        minRadius: 45,
-                        maxRadius: 65,
-                        child: Stack(
-                          children: [
-                            Center(
-                              child: _pickedImageBytes != null ?
-                              Image.memory(
-                                _pickedImageBytes!,
-                                fit: BoxFit.fill,
-                              ) : Image(
-                                image: NetworkImage("https://cdn-icons-png.freepik.com/512/8742/8742495.png"),
-                              ),
-                            ),
-                            Align(
-                                alignment: Alignment.bottomRight,
-                                child: GestureDetector(
-                                  onTap: () async{
-                                    _convertBase64();
-                                  },
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.grey.shade200,
-                                    child: Icon(Icons.edit,color: colors.umber,),
+                  StreamBuilder(
+                    stream: uploadPict.subject,
+                    builder: (context, snapshot) {
+                      return Center(
+                        child: CircleAvatar(
+                            minRadius: 45,
+                            maxRadius: 65,
+                            child: !snapshot.hasData ?
+                            CircularProgressIndicator() :
+                            Stack(
+                              children: [
+                                Center(
+                                  child: snapshot.data!.isNotEmpty ?
+                                  Image.memory(
+                                    snapshot.data!,
+                                    fit: BoxFit.fill,
+                                  ) : Image(
+                                    image: NetworkImage("https://cdn-icons-png.freepik.com/512/8742/8742495.png"),
                                   ),
-                                )
-                            ),
-                          ],
-                        )
-                    ),
+                                ),
+                                Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: GestureDetector(
+                                      onTap: () async{
+                                        _convertBase64();
+                                      },
+                                      child: CircleAvatar(
+                                        backgroundColor: Colors.grey.shade200,
+                                        child: Icon(Icons.edit,color: colors.umber,),
+                                      ),
+                                    )
+                                ),
+                              ],
+                            )
+                        ),
+                      );
+                    }
                   ),
                   SizedBox(
                     height: 20,
@@ -452,7 +477,23 @@ class _AppbarState extends State<Appbar> {
                   ),
                   Spacer(),
                   _materialbutton.materialButton("Update", ()async{
-                    print(usersModel.loggedUser.value);
+                    Map _payload = {
+                      "fname": _fname .text,
+                      "lname": _lname.text,
+                      "age": _age.text,
+                      "email": _email.text,
+                      "phone": _phone.text,
+                      "base64Image": _base64,
+                      "admin_id": usersModel.loggedUser.value["admin_id"],
+                      "gender": usersModel.loggedUser.value["gender"],
+                      "subject": usersModel.loggedUser.value["subject"],
+                      "phone": usersModel.loggedUser.value["phone"],
+                      "email": usersModel.loggedUser.value["email"],
+                      "pass": usersModel.loggedUser.value["pass"],
+                    };
+                    print(usersModel.loggedUser.value["admin_id"]);
+                    _adminApis.editAdmin(admin_id: usersModel.loggedUser.value["admin_id"], payload: _payload);
+                    Navigator.of(context).pop(null);
                   }),
                   SizedBox(
                     height: 20,
@@ -495,11 +536,23 @@ class _AppbarState extends State<Appbar> {
       if (fileBytes != null) {
         setState(() {
           _base64 = base64Encode(fileBytes);
-          _pickedImageBytes = result.files.first.bytes;
-          print("GET IMAGE BYTE $_pickedImageBytes");
+          uploadPict.update(data: result.files.first.bytes!);
+          // _pickedImageBytes = result.files.first.bytes;
+          // print("GET IMAGE BYTE $_pickedImageBytes");
         });
       }
     }
     return null;
   }
 }
+
+class UploadPict{
+  BehaviorSubject<Uint8List> subject = new BehaviorSubject();
+  Stream get stream => subject.stream;
+  Uint8List get current => subject.value;
+
+  update({required Uint8List data}){
+    subject.add(data);
+  }
+}
+final UploadPict uploadPict = new UploadPict();

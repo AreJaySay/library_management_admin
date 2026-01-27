@@ -9,7 +9,7 @@ import '../../models/books.dart';
 class ReservationApis{
   FirebaseDatabase database = FirebaseDatabase.instance;
 
-  Future accept({required Map details})async{
+  Future action({required Map details, required String status})async{
     DatabaseReference usersRef = database.ref('borrow');
     await usersRef.push().set({
       "id": "${10000 + Random().nextInt(90000)}",
@@ -27,7 +27,7 @@ class ReservationApis{
         "borrow_date": details["borrow_details"]["borrow_date"],
         "end_date": details["borrow_details"]["end_date"],
       },
-      "status": "Accepted",
+      "status": status,
       "created_at": details["created_at"],
       "accepted_at": "${DateTime.now()}",
     });

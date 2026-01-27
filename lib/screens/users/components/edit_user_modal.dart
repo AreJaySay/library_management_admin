@@ -385,6 +385,7 @@ class _EditUserModalState extends State<EditUserModal> {
                     _snackbarMessage.snackbarMessage(context, message: "All fields are required.", is_error: true);
                   }else{
                     Map _payload = {
+                      "id": "${widget.details["id"]}",
                       "name": _name.text,
                       "age": _age.text,
                       "email": _email.text,
@@ -393,8 +394,9 @@ class _EditUserModalState extends State<EditUserModal> {
                       "year": _year,
                       "section": _section,
                       "base64Image": _base64,
-                      "password": widget.details["password"]
+                      "password": widget.details["password"],
                     };
+                    print(widget.details["id"]);
                     _screenLoaders.functionLoader(context);
                     _usersApi.edit(id: widget.details["id"], payload: _payload).whenComplete((){
                       Navigator.of(context).pop(null);

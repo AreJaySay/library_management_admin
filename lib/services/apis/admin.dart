@@ -41,9 +41,9 @@ class AdminApis{
     });
   }
   // EDIT ADMIN
-  Future editAdmin({required String old_teacher_id,required Map payload})async{
+  Future editAdmin({required String admin_id,required Map payload})async{
     DatabaseReference usersRef = database.ref('admin');
-    FirebaseDatabase.instance.ref().child('admin').orderByChild("admin_id").equalTo(old_teacher_id).onChildAdded.forEach((event)async{
+    FirebaseDatabase.instance.ref().child('admin').orderByChild("admin_id").equalTo(admin_id).onChildAdded.forEach((event)async{
       await usersRef.update({
         "${event.snapshot.key!}/fname": payload["fname"],
         "${event.snapshot.key!}/lname": payload["lname"],
