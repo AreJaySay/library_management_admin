@@ -80,9 +80,7 @@ class _EditUserModalState extends State<EditUserModal> {
         clipBehavior: Clip.none,
         children: <Widget>[
           Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
+            child: ListView(
               children: [
                 SizedBox(
                   height: 30,
@@ -379,7 +377,9 @@ class _EditUserModalState extends State<EditUserModal> {
                     },
                   ),
                 ),
-                Spacer(),
+                SizedBox(
+                  height: 50,
+                ),
                 _materialbutton.materialButton("Update", (){
                   if(_name.text.isEmpty || _age.text.isEmpty || _schoolid.text.isEmpty || _department == "" || _department == "" || _section == ""){
                     _snackbarMessage.snackbarMessage(context, message: "All fields are required.", is_error: true);

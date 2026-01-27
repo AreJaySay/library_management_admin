@@ -18,6 +18,7 @@ import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:universal_html/html.dart' as html;
 import '../../widgets/no_data_widget.dart';
 import '../widgets/button.dart';
+import 'components/delete_modal.dart';
 import 'components/filters.dart';
 
 class Users extends StatefulWidget {
@@ -332,9 +333,7 @@ class _UsersState extends State<Users> {
                                                                 Radius.circular(
                                                                     20.0))
                                                         ),
-                                                        content: EditUserModal(
-                                                          details: snapshot
-                                                              .data![x],)
+                                                        content: value.text == "Edit" ? EditUserModal(details: snapshot.data![x],) : DeleteModal(details: snapshot.data![x],)
                                                     )
                                             );
                                           },

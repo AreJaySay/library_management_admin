@@ -52,5 +52,13 @@ class UsersApi{
       });
     });
   }
+
+  // DELETE STUDENT
+  Future delete({required String id})async{
+    FirebaseDatabase.instance.ref().child('users').orderByChild("id").equalTo(id).onChildAdded.forEach((event)async{
+      DatabaseReference ref = FirebaseDatabase.instance.ref("users/${event.snapshot.key!}");
+      await ref.remove();
+    });
+  }
 }
 
