@@ -32,12 +32,6 @@ class _BorrowerState extends State<Borrower> {
     decimalDigits: 2,
   );
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    _borrowersApi.get();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

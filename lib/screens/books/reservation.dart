@@ -23,7 +23,6 @@ class _ReservationsState extends State<Reservations> {
   final _scrollController = ScrollController();
   final ReservationApis _reservationApis = new ReservationApis();
   final NotificationApis _notificationApis = new NotificationApis();
-  final ScreenLoaders _screenLoaders = new ScreenLoaders();
   final SnackbarMessage _snackbarMessage = new SnackbarMessage();
 
   @override

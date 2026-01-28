@@ -572,7 +572,6 @@ class _AddBookState extends State<AddBook> {
                   if(widget.details != null){
                     _booksApi.edit(old_isbn: widget.details!["isbn"], payload: _payload).whenComplete((){
                       Navigator.of(context).pop(null);
-                      Navigator.of(context).pop(null);
                       _snackbarMessage.snackbarMessage(context, message: "Book details updated successfully!");
                     });
                   }else{

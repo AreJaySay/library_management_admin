@@ -21,6 +21,7 @@ import 'package:library_book/services/routes.dart';
 import 'package:library_book/utils/palettes/app_colors.dart' hide Colors;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:universal_html/html.dart' as html;
+import '../../services/apis/borrowers.dart';
 import '../../widgets/no_data_widget.dart';
 import '../widgets/shimmer_loader/table.dart';
 import 'package:flutter/rendering.dart';
@@ -34,6 +35,7 @@ class Books extends StatefulWidget {
 class _BooksState extends State<Books> {
   final Routes _routes = new Routes();
   final BooksApi _booksApi = new BooksApi();
+  final BorrowersApi _borrowersApi = new BorrowersApi();
   final _scrollController = ScrollController();
   final GlobalKey _printKey = GlobalKey();
   List? _toSearch;
@@ -43,6 +45,7 @@ class _BooksState extends State<Books> {
   void initState() {
     // TODO: implement initState
     _booksApi.get();
+    _borrowersApi.get();
     super.initState();
   }
 
@@ -102,142 +105,155 @@ class _BooksState extends State<Books> {
             NoDataWidget() :
             Stack(
               children: [
-                RepaintBoundary(
-                  key: _printKey,
-                  child: Scrollbar(
-                    controller: _scrollController,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      controller: _scrollController,
-                      child: Table(
-                        border: TableBorder.all(color: colors.umber.withOpacity(0.1)),
-                        columnWidths: const <int, TableColumnWidth>{
-                          0: FixedColumnWidth(100),
-                          1: FixedColumnWidth(100),
-                          2: FixedColumnWidth(120),
-                          3: FixedColumnWidth(150),
-                          4: FixedColumnWidth(150),
-                          5: FixedColumnWidth(150),
-                          6: FixedColumnWidth(150),
-                          7: FlexColumnWidth(),
-                          8: FixedColumnWidth(100),
-                          9: FixedColumnWidth(100),
-                        },
-                        defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                        children: <TableRow>[
-                          TableRow(
-                            children: <Widget>[
-                              TableCell(child: Padding(
-                                padding: EdgeInsetsGeometry.symmetric(vertical: 10),
-                                child: Center(child: Text('ID',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold),)),
-                              )),
-                              TableCell(child: Center(child: Text('Image',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                              TableCell(child: Center(child: Text('Isbn',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                              TableCell(child: Center(child: Text('Subject',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                              TableCell(child: Center(child: Text('Title',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                              TableCell(child: Center(child: Text('Author',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                              TableCell(child: Center(child: Text('Publisher',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                              TableCell(child: Center(child: Text('Summary',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                              TableCell(child: Center(child: Text('Stock',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                              TableCell(child: Center(child: Text('Action',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                            ],
-                          ),
-                          for(int x = 0; x < snapshot.data!.length; x++)...{
-                            TableRow(
-                              decoration: BoxDecoration(
-                                  color: Colors.white
+                StreamBuilder(
+                  stream: borrowersModel.subject,
+                  builder: (context, borrowSnapshot) {
+                    return RepaintBoundary(
+                      key: _printKey,
+                      child: Scrollbar(
+                        controller: _scrollController,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          controller: _scrollController,
+                          child: Table(
+                            border: TableBorder.all(color: colors.umber.withOpacity(0.1)),
+                            columnWidths: const <int, TableColumnWidth>{
+                              0: FixedColumnWidth(100),
+                              1: FixedColumnWidth(100),
+                              2: FixedColumnWidth(120),
+                              3: FixedColumnWidth(150),
+                              4: FixedColumnWidth(150),
+                              5: FixedColumnWidth(150),
+                              6: FixedColumnWidth(150),
+                              7: FlexColumnWidth(),
+                              8: FixedColumnWidth(100),
+                              9: FixedColumnWidth(100),
+                            },
+                            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                            children: <TableRow>[
+                              TableRow(
+                                children: <Widget>[
+                                  TableCell(child: Padding(
+                                    padding: EdgeInsetsGeometry.symmetric(vertical: 10),
+                                    child: Center(child: Text('ID',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold),)),
+                                  )),
+                                  TableCell(child: Center(child: Text('Image',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                                  TableCell(child: Center(child: Text('Isbn',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                                  TableCell(child: Center(child: Text('Subject',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                                  TableCell(child: Center(child: Text('Title',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                                  TableCell(child: Center(child: Text('Author',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                                  TableCell(child: Center(child: Text('Publisher',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                                  TableCell(child: Center(child: Text('Summary',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                                  TableCell(child: Center(child: Text('Stock',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                                  TableCell(child: Center(child: Text('Action',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                                ],
                               ),
-                              children: <Widget>[
-                                TableCell(child: Padding(
-                                  padding: EdgeInsetsGeometry.symmetric(vertical: 10),
-                                  child: Center(child: Text('${x+1}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,)),
-                                )),
-                                TableCell(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Center(
-                                      child: snapshot.data![x]["base64Image"] != "" ?
-                                      Image.memory(
-                                        base64Decode(snapshot.data![x]["base64Image"]),
-                                        width: 35,
-                                        height: 55,
-                                        fit: BoxFit.fill,
-                                      ) :
-                                      Image(
-                                        image: AssetImage("assets/icons/book.png"),
-                                        width: 50,
-                                        height: 50,
-                                        color: Colors.grey.shade400,
-                                      ),
-                                    ),
+                              for(int x = 0; x < snapshot.data!.length; x++)...{
+                                TableRow(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white
                                   ),
-                                ),
-                                TableCell(child: Center(child: Text('${snapshot.data![x]["isbn"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                                TableCell(child: Center(child: Text('${snapshot.data![x]["subject"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                                TableCell(child: Center(child: Text('${snapshot.data![x]["title"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                                TableCell(child: Center(child: Text('${snapshot.data![x]["author"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                                TableCell(child: Center(child: Text('${snapshot.data![x]["publisher"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                                TableCell(child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-                                  child: Center(child: Text('${snapshot.data![x]["summary"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,maxLines: 3,overflow: TextOverflow.ellipsis,)),
-                                )),
-                                TableCell(child: Center(child: Text('${snapshot.data![x]["stock"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                                TableCell(child: Center(child: DropdownButtonHideUnderline(
-                                  child: DropdownButton2(
-                                    customButton: Icon(
-                                        Icons.more_vert,
-                                        color: colors.clay
-                                    ),
-                                    items: [
-                                      ...MenuItems.firstItems.map(
-                                            (item) => DropdownMenuItem<MenuItem>(
-                                          value: item,
-                                          child: MenuItems.buildItem(item),
+                                  children: <Widget>[
+                                    TableCell(child: Padding(
+                                      padding: EdgeInsetsGeometry.symmetric(vertical: 10),
+                                      child: Center(child: Text('${x+1}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,)),
+                                    )),
+                                    TableCell(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Center(
+                                          child: snapshot.data![x]["base64Image"] != "" ?
+                                          Image.memory(
+                                            base64Decode(snapshot.data![x]["base64Image"]),
+                                            width: 35,
+                                            height: 55,
+                                            fit: BoxFit.fill,
+                                          ) :
+                                          Image(
+                                            image: AssetImage("assets/icons/book.png"),
+                                            width: 50,
+                                            height: 50,
+                                            color: Colors.grey.shade400,
+                                          ),
                                         ),
                                       ),
-                                    ],
-                                    onChanged: (value) {
-                                      MenuItems.onChanged(context, value! as MenuItem);
-                                      if(value.text == "Edit"){
-                                        showDialog<void>(
-                                            context: context,
-                                            builder: (context) => AlertDialog(
-                                                backgroundColor: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.all(Radius.circular(20.0))
-                                                ),
-                                                content: AddBook(details: snapshot.data![x])
-                                            )
-                                        );
-                                      }else{
-                                        _booksApi.delete(isbn: snapshot.data![x]["isbn"]);
-                                      }
+                                    ),
+                                    TableCell(child: Center(child: Text('${snapshot.data![x]["isbn"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                                    TableCell(child: Center(child: Text('${snapshot.data![x]["subject"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                                    TableCell(child: Center(child: Text('${snapshot.data![x]["title"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                                    TableCell(child: Center(child: Text('${snapshot.data![x]["author"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                                    TableCell(child: Center(child: Text('${snapshot.data![x]["publisher"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                                    TableCell(child: Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                                      child: Center(child: Text('${snapshot.data![x]["summary"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,maxLines: 3,overflow: TextOverflow.ellipsis,)),
+                                    )),
+                                    if(borrowSnapshot.hasData)...{
+                                      if(int.parse(snapshot.data![x]["stock"])-borrowSnapshot.data!.where((s) => json.decode(s["book_information"])["isbn"] == snapshot.data![x]["isbn"]).toList().length == 0)...{
+                                        TableCell(child: Center(child: Text('No \nAvailable',style: TextStyle(color: Colors.grey.shade300),textAlign: TextAlign.center,))),
+                                      }else...{
+                                        TableCell(child: Center(child: Text('${int.parse(snapshot.data![x]["stock"])-borrowersModel.value.where((s) => json.decode(s["book_information"])["isbn"] == snapshot.data![x]["isbn"]).toList().length}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                                      },
+                                    }else...{
+                                      TableCell(child: Center(child: CircularProgressIndicator())),
                                     },
-                                    dropdownStyleData: DropdownStyleData(
-                                      width: 160,
-                                      padding: const EdgeInsets.symmetric(vertical: 6),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(4),
-                                        color: Colors.white,
-                                      ),
-                                      offset: const Offset(0, 8),
-                                    ),
-                                    menuItemStyleData: MenuItemStyleData(
-                                      customHeights: [
-                                        ...List<double>.filled(MenuItems.firstItems.length, 48),
+                                    TableCell(child: Center(child: DropdownButtonHideUnderline(
+                                      child: DropdownButton2(
+                                        customButton: Icon(
+                                            Icons.more_vert,
+                                            color: colors.clay
+                                        ),
+                                        items: [
+                                          ...MenuItems.firstItems.map(
+                                                (item) => DropdownMenuItem<MenuItem>(
+                                              value: item,
+                                              child: MenuItems.buildItem(item),
+                                            ),
+                                          ),
+                                        ],
+                                        onChanged: (value) {
+                                          MenuItems.onChanged(context, value! as MenuItem);
+                                          if(value.text == "Edit"){
+                                            showDialog<void>(
+                                                context: context,
+                                                builder: (context) => AlertDialog(
+                                                    backgroundColor: Colors.white,
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.all(Radius.circular(20.0))
+                                                    ),
+                                                    content: AddBook(details: snapshot.data![x])
+                                                )
+                                            );
+                                          }else{
+                                            _booksApi.delete(isbn: snapshot.data![x]["isbn"]);
+                                          }
+                                        },
+                                        dropdownStyleData: DropdownStyleData(
+                                          width: 160,
+                                          padding: const EdgeInsets.symmetric(vertical: 6),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(4),
+                                            color: Colors.white,
+                                          ),
+                                          offset: const Offset(0, 8),
+                                        ),
+                                        menuItemStyleData: MenuItemStyleData(
+                                          customHeights: [
+                                            ...List<double>.filled(MenuItems.firstItems.length, 48),
 
-                                      ],
-                                      padding: const EdgeInsets.only(left: 16, right: 16),
-                                    ),
-                                  ),
-                                ))),
-                              ],
-                            ),
-                          }
-                        ],
+                                          ],
+                                          padding: const EdgeInsets.only(left: 16, right: 16),
+                                        ),
+                                      ),
+                                    ))),
+                                  ],
+                                ),
+                              }
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  }
                 ),
               ],
             )
