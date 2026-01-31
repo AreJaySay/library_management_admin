@@ -274,10 +274,9 @@ class _AppbarState extends State<Appbar> {
                           fit: BoxFit.fill,
                         ) :
                         Image(
-                          image: AssetImage("assets/icons/book.png"),
+                          image: NetworkImage("https://cdn-icons-png.freepik.com/512/8742/8742495.png"),
                           width: 50,
                           height: 50,
-                          color: Colors.grey.shade400,
                         ),
                       ),
                       ),

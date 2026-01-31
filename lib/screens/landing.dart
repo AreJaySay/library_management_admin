@@ -45,7 +45,7 @@ class _LandingState extends State<Landing> {
             maxWidth: 300,
             minWidth: 110,
             hasResizer: false,
-            backgroundColor: Colors.white,
+            backgroundColor: Color.fromRGBO(18, 125, 194, 1),
             controller: _sideMenuController,
             builder: (data) => SideMenuData(
               header: Padding(
@@ -71,16 +71,16 @@ class _LandingState extends State<Landing> {
                       child: Image(
                         width: 30,
                         height: 30,
-                        color: _selected == x ? Colors.white : colors.umber,
+                        color: _selected != x ? Colors.white : colors.umber,
                         image: AssetImage("assets/icons/${_icons[x]}.png"),
                       ),
                     ),
-                    titleStyle: TextStyle(fontFamily: "OpenSans",fontSize: 15,fontWeight: FontWeight.w500),
-                    selectedTitleStyle: TextStyle(color: Colors.white),
+                    titleStyle: TextStyle(fontFamily: "OpenSans",fontSize: 15,fontWeight: FontWeight.w500, color: Colors.white,),
+                    selectedTitleStyle: TextStyle(color: _selected != x ? Colors.white : colors.umber),
                     itemHeight: 55,
                     borderRadius: BorderRadiusGeometry.circular(10),
                     hasSelectedLine: false,
-                    highlightSelectedColor: colors.umber,
+                    highlightSelectedColor: Colors.white,
                     margin: EdgeInsetsDirectional.symmetric(horizontal: 20,vertical: 3)
                   ),
                 }
