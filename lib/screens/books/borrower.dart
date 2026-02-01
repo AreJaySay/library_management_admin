@@ -114,22 +114,28 @@ class _BorrowerState extends State<Borrower> {
                       TableCell(child: Center(child: Text('${snapshot.data![x]["borrower"]["year"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
                       TableCell(child: Center(child: Text('${snapshot.data![x]["borrower"]["section"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
                       TableCell(child: Center(child: Text('${jsonDecode(snapshot.data![x]["book_information"])["title"]}',style: TextStyle(fontFamily: "Roboto_normal",),textAlign: TextAlign.center,maxLines: 3,))),
-                      TableCell(child: Center(child: Text('${DateFormat("MMM dd, yyyy").format(DateTime.parse(snapshot.data![x]["borrow_details"]["borrow_date"]))}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                      TableCell(child: Center(child: Text('${DateFormat("MMM dd, yyyy").format(DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]))}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                      TableCell(child: Center(child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('${DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]).difference(DateTime.now()).inDays < 0 ?
-                        "Over Due"
-                        : DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]).difference(DateTime.now()).inDays == 0 ?
-                        "Due Today/Tomorrow"
-                        : "--"}',style: TextStyle(fontFamily: "Roboto_normal" , color: DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]).difference(DateTime.now()).inDays < 0 ? Colors.red : DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]).difference(DateTime.now()).inDays == 0 ? Colors.orange : colors.coffee),textAlign: TextAlign.center,),
-                      ))),
+                      TableCell(child: Center(child: Text('${snapshot.data![x]["borrow_details"]["borrow_date"] == "" ? "${DateFormat("MMM dd, yyyy").format(DateTime.now())}" : DateFormat("MMM dd, yyyy").format(DateTime.parse(snapshot.data![x]["borrow_details"]["borrow_date"]))}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                      TableCell(child: Center(child: Text('${snapshot.data![x]["borrow_details"]["end_date"] == "" ? "--" : DateFormat("MMM dd, yyyy").format(DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]))}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+                      if(snapshot.data![x]["borrow_details"]["end_date"] != "")...{
+                        TableCell(child: Center(child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('${DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]).difference(DateTime.now()).inDays < 0 ?
+                          "Over Due"
+                              : DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]).difference(DateTime.now()).inDays == 0 ?
+                          "Due Today/Tomorrow"
+                              : "--"}',style: TextStyle(fontFamily: "Roboto_normal" , color: DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]).difference(DateTime.now()).inDays < 0 ? Colors.red : DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]).difference(DateTime.now()).inDays == 0 ? Colors.orange : colors.coffee),textAlign: TextAlign.center,),
+                        ))),
+                      }else...{
+                        TableCell(child: Center(child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text("--",style: TextStyle(fontFamily: "Roboto_normal" , color: colors.coffee),textAlign: TextAlign.center,),
+                        ))),
+                      },
                       TableCell(child: Center(
                         child: IconButton(
                           icon: Icon(Icons.more_vert),
                           onPressed: (){
-                            print(snapshot.data![x]["id"]);
-                            _settle(id:snapshot.data![x]["id"], dayspenalty: DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]).difference(DateTime.now()).inDays);
+                            _settle(id:snapshot.data![x]["id"], dayspenalty: snapshot.data![x]["borrow_details"]["end_date"] == "" ? 0 : DateTime.parse(snapshot.data![x]["borrow_details"]["end_date"]).difference(DateTime.now()).inDays);
                           },
                         ),
                       )),
