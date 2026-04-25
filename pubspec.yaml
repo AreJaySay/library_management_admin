@@ -51,6 +51,9 @@ dependencies:
   flutter_launcher_icons: ^0.14.4
   month_picker_dialog: ^6.7.0
   flutter_date_pickers: ^0.4.3
+  fl_chart: any
+  percent_indicator: ^4.2.5
+  qr_flutter: ^4.1.0
 
   # MEDIA
   file_picker: ^10.3.3

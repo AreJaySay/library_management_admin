@@ -13,7 +13,6 @@ class AdminApis{
         final data = dataSnapshot.value;
         if (data is Map) {
           adminModel.update(data: data.values.toList());
-          print("ADMIN ${data.values.toList()}");
         } else if (data is List) {
           adminModel.update(data: data);
         }

@@ -248,10 +248,16 @@
       "languageVersion": "3.1"
     },
     {
-      "name": "flutter",
-      "rootUri": "file:///Users/rolandoc./Documents/flutter/packages/flutter",
+      "name": "fl_chart",
+      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/fl_chart-1.1.0",
       "packageUri": "lib/",
-      "languageVersion": "3.8"
+      "languageVersion": "3.6"
+    },
+    {
+      "name": "flutter",
+      "rootUri": "file:///Volumes/Rolando%20External%20Drive/flutter/packages/flutter",
+      "packageUri": "lib/",
+      "languageVersion": "3.7"
     },
     {
       "name": "flutter_date_pickers",
@@ -345,15 +351,15 @@
     },
     {
       "name": "flutter_localizations",
-      "rootUri": "file:///Users/rolandoc./Documents/flutter/packages/flutter_localizations",
+      "rootUri": "file:///Volumes/Rolando%20External%20Drive/flutter/packages/flutter_localizations",
       "packageUri": "lib/",
-      "languageVersion": "3.8"
+      "languageVersion": "3.7"
     },
     {
       "name": "flutter_plugin_android_lifecycle",
-      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.32",
+      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.31",
       "packageUri": "lib/",
-      "languageVersion": "3.9"
+      "languageVersion": "3.7"
     },
     {
       "name": "flutter_side_menu",
@@ -363,15 +369,15 @@
     },
     {
       "name": "flutter_test",
-      "rootUri": "file:///Users/rolandoc./Documents/flutter/packages/flutter_test",
+      "rootUri": "file:///Volumes/Rolando%20External%20Drive/flutter/packages/flutter_test",
       "packageUri": "lib/",
-      "languageVersion": "3.8"
+      "languageVersion": "3.7"
     },
     {
       "name": "flutter_web_plugins",
-      "rootUri": "file:///Users/rolandoc./Documents/flutter/packages/flutter_web_plugins",
+      "rootUri": "file:///Volumes/Rolando%20External%20Drive/flutter/packages/flutter_web_plugins",
       "packageUri": "lib/",
-      "languageVersion": "3.8"
+      "languageVersion": "3.7"
     },
     {
       "name": "html",
@@ -411,19 +417,19 @@
     },
     {
       "name": "leak_tracker",
-      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/leak_tracker-11.0.2",
+      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/leak_tracker-10.0.9",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
       "name": "leak_tracker_flutter_testing",
-      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/leak_tracker_flutter_testing-3.0.10",
+      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/leak_tracker_flutter_testing-3.0.9",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
       "name": "leak_tracker_testing",
-      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/leak_tracker_testing-3.0.2",
+      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/leak_tracker_testing-3.0.1",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
@@ -447,9 +453,9 @@
     },
     {
       "name": "meta",
-      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/meta-1.17.0",
+      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/meta-1.16.0",
       "packageUri": "lib/",
-      "languageVersion": "3.5"
+      "languageVersion": "2.12"
     },
     {
       "name": "mime",
@@ -495,15 +501,15 @@
     },
     {
       "name": "path_provider_android",
-      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/path_provider_android-2.2.20",
+      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/path_provider_android-2.2.19",
       "packageUri": "lib/",
-      "languageVersion": "3.9"
+      "languageVersion": "3.7"
     },
     {
       "name": "path_provider_foundation",
-      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/path_provider_foundation-2.4.3",
+      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/path_provider_foundation-2.4.2",
       "packageUri": "lib/",
-      "languageVersion": "3.9"
+      "languageVersion": "3.7"
     },
     {
       "name": "path_provider_linux",
@@ -522,6 +528,12 @@
       "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/path_provider_windows-2.3.0",
       "packageUri": "lib/",
       "languageVersion": "3.2"
+    },
+    {
+      "name": "percent_indicator",
+      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/percent_indicator-4.2.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "petitparser",
@@ -546,6 +558,18 @@
       "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/provider-6.1.5+1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "qr",
+      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/qr-3.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
+      "name": "qr_flutter",
+      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/qr_flutter-4.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
     },
     {
       "name": "rxdart",
@@ -609,9 +633,9 @@
     },
     {
       "name": "sky_engine",
-      "rootUri": "file:///Users/rolandoc./Documents/flutter/bin/cache/pkg/sky_engine",
+      "rootUri": "file:///Volumes/Rolando%20External%20Drive/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
-      "languageVersion": "3.8"
+      "languageVersion": "3.7"
     },
     {
       "name": "source_span",
@@ -645,7 +669,7 @@
     },
     {
       "name": "test_api",
-      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/test_api-0.7.7",
+      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/test_api-0.7.4",
       "packageUri": "lib/",
       "languageVersion": "3.5"
     },
@@ -699,9 +723,9 @@
     },
     {
       "name": "vector_math",
-      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/vector_math-2.2.0",
+      "rootUri": "file:///Users/rolandoc./.pub-cache/hosted/pub.dev/vector_math-2.1.4",
       "packageUri": "lib/",
-      "languageVersion": "3.1"
+      "languageVersion": "2.14"
     },
     {
       "name": "vm_service",
@@ -747,8 +771,8 @@
     }
   ],
   "generator": "pub",
-  "generatorVersion": "3.10.7",
-  "flutterRoot": "file:///Users/rolandoc./Documents/flutter",
-  "flutterVersion": "3.38.7",
+  "generatorVersion": "3.8.1",
+  "flutterRoot": "file:///Volumes/Rolando%20External%20Drive/flutter",
+  "flutterVersion": "3.32.7",
   "pubCache": "file:///Users/rolandoc./.pub-cache"
 }

@@ -13,11 +13,13 @@ class BooksApi{
       "title": payload["title"],
       "author": payload["author"],
       "publisher": payload["publisher"],
+      "year": payload["year"],
       "copyright": payload["copyright"],
       "edition_number": payload["edition_number"],
       "pages_number": payload["pages_number"],
       "isbn": payload["isbn"],
       "stock": payload["stock"],
+      "overall_stock": payload["overall_stock"],
       "shell_number": payload["shell_number"],
       "summary": payload["summary"],
       "categories": payload["categories"],
@@ -33,6 +35,7 @@ class BooksApi{
         "${event.snapshot.key!}/title": payload["title"],
         "${event.snapshot.key!}/author": payload["author"],
         "${event.snapshot.key!}/publisher": payload["publisher"],
+        "${event.snapshot.key!}/year": payload["year"],
         "${event.snapshot.key!}/copyright": payload["copyright"],
         "${event.snapshot.key!}/edition_number": payload["edition_number"],
         "${event.snapshot.key!}/pages_number": payload["pages_number"],
@@ -62,7 +65,6 @@ class BooksApi{
         if (data is Map) {
           booksModel.update(data: data.values.toList());
           booksModel.updateSearch(data: data.values.toList());
-          print("BOOKS ${data.values.toList()}");
         } else if (data is List) {
           booksModel.update(data: data);
           booksModel.updateSearch(data: data);

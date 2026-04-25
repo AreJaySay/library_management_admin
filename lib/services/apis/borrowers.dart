@@ -6,15 +6,18 @@ import '../../models/users.dart';
 class BorrowersApi{
   FirebaseDatabase database = FirebaseDatabase.instance;
 
-  Future get() async {
+  Future get({bool isOverdue = false}) async {
     DatabaseReference ref = FirebaseDatabase.instance.ref('borrow');
     ref.onValue.listen((DatabaseEvent event) {
       final dataSnapshot = event.snapshot;
       if (dataSnapshot.exists) {
         final data = dataSnapshot.value;
         if (data is Map) {
-          borrowersModel.update(data: data.values.toList().where((s) => s["status"] == "Accepted").toList());
-          print("BORROWERS ${data.values.toList()}");
+          if(isOverdue){
+            borrowersModel.update(data: data.values.toList().where((s) => DateTime.parse(s["borrow_details"]["end_date"]).difference(DateTime.now()).inDays < 0).toList());
+          }else{
+            borrowersModel.update(data: data.values.toList().where((s) => s["status"] == "Accepted").toList());
+          }
         } else if (data is List) {
           borrowersModel.update(data: data);
         }

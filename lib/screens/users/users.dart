@@ -22,6 +22,8 @@ import 'components/delete_modal.dart';
 import 'components/filters.dart';
 
 class Users extends StatefulWidget {
+  final bool isInventory;
+  Users({this.isInventory = false});
   @override
   State<Users> createState() => _UsersState();
 }
@@ -52,61 +54,64 @@ class _UsersState extends State<Users> {
                   shadowColor: Colors.grey.shade200,
                   centerTitle: false,
                   backgroundColor: Colors.white,
-                  flexibleSpace: Appbar(
-                    title: "STUDENTS",
-                    onchange: (text) {
-                      List _res = usersModel.valueSearch.where((s) =>
-                          s["name"].toString().toLowerCase().contains(
-                              text.toLowerCase())).toList();
-                      usersModel.update(data: _res);
-                    },
-                    onPrint: () async {
-                      _createExcel(datas: snapshot.data!);
-                    },
-                    onAdd: () {},
-                    datePicker: IconButton(
-                      icon: Icon(Icons.date_range, color: colors.umber,),
-                      onPressed: () {
-                        _selectMonth(context);
+                  flexibleSpace: Padding(
+                    padding: EdgeInsets.only(left: widget.isInventory ? 50 : 0),
+                    child: Appbar(
+                      title: "STUDENTS",
+                      onchange: (text) {
+                        List _res = usersModel.valueSearch.where((s) =>
+                            s["name"].toString().toLowerCase().contains(
+                                text.toLowerCase())).toList();
+                        usersModel.update(data: _res);
                       },
-                    ),
-                    filterWidget: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            Colors.white),
+                      onPrint: () async {
+                        _createExcel(datas: snapshot.data!);
+                      },
+                      onAdd: () {},
+                      datePicker: IconButton(
+                        icon: Icon(Icons.date_range, color: colors.umber,),
+                        onPressed: () {
+                          _selectMonth(context);
+                        },
                       ),
-                      onPressed: () async {
-                        await showDialog<void>(
-                            context: context,
-                            builder: (context) =>
-                                AlertDialog(
-                                    backgroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20.0))
-                                    ),
-                                    content: Filter(
-                                      onConfirm: (v) {
-                                        print(v);
-                                        List _res = usersModel.valueSearch.where((s) => s["department"] == v["department"] && s["course"] == v["selected_section"]).toList();
-                                        usersModel.update(data: _res);
-                                      },
-                                    )
-                                )
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          Text("Filter", style: TextStyle(
-                              fontFamily: "OpenSans",
-                              fontWeight: FontWeight.w600,
-                              color: colors.umber),),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Icon(
-                            Icons.arrow_drop_down_sharp, color: colors.umber,)
-                        ],
+                      filterWidget: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Colors.white),
+                        ),
+                        onPressed: () async {
+                          await showDialog<void>(
+                              context: context,
+                              builder: (context) =>
+                                  AlertDialog(
+                                      backgroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20.0))
+                                      ),
+                                      content: Filter(
+                                        onConfirm: (v) {
+                                          print(v);
+                                          List _res = usersModel.valueSearch.where((s) => s["department"] == v["department"] && s["course"] == v["selected_section"]).toList();
+                                          usersModel.update(data: _res);
+                                        },
+                                      )
+                                  )
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            Text("Filter", style: TextStyle(
+                                fontFamily: "OpenSans",
+                                fontWeight: FontWeight.w600,
+                                color: colors.umber),),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Icon(
+                              Icons.arrow_drop_down_sharp, color: colors.umber,)
+                          ],
+                        ),
                       ),
                     ),
                   )),

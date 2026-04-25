@@ -28,6 +28,9 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
 class Books extends StatefulWidget {
+  final bool isInventory;
+  final String type;
+  Books({this.isInventory = false, this.type = ""});
   @override
   State<Books> createState() => _BooksState();
 }
@@ -45,7 +48,14 @@ class _BooksState extends State<Books> {
   void initState() {
     // TODO: implement initState
     _booksApi.get();
-    _borrowersApi.get();
+    _borrowersApi.get(isOverdue: widget.type == "Overdue Books");
+    if(widget.isInventory){
+      if(widget.type == "Borrowed Books".toUpperCase() || widget.type == "Overdue Books".toUpperCase()){
+        _selected = "borrower";
+      }else if(widget.type == "Reserved Books".toUpperCase()){
+        _selected = "reservation";
+      }
+    }
     super.initState();
   }
 
@@ -60,7 +70,9 @@ class _BooksState extends State<Books> {
                 shadowColor: Colors.grey.shade200,
                 centerTitle: false,
                 backgroundColor: Colors.white,
-                flexibleSpace: Appbar(isReservation: true,isBook: true,title: "BOOKS",onchange: (text){
+                title: !widget.isInventory ? SizedBox() : Text(widget.type,style: TextStyle(fontFamily: "OpenSans",fontWeight: FontWeight.bold,fontSize: 15,color: colors.umber),),
+                flexibleSpace: widget.isInventory ?  SizedBox()
+                    : Appbar(isReservation: true,isBook: true,title: "BOOKS",onchange: (text){
                   List _res = booksModel.valueSearch.where((s) => s["title"].toString().toLowerCase().contains(text.toLowerCase())).toList();
                   booksModel.update(data: _res);
                 }, selected: (value){

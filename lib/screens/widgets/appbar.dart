@@ -18,12 +18,12 @@ import 'dart:typed_data';
 
 class Appbar extends StatefulWidget {
   final String title;
-  final bool isBook, isReservation, hasAddButton;
+  final bool isBook, isReservation, hasAddButton, hasPrinting, hasSearch;
   final ValueChanged<String> onchange;
   final Function(String)? selected;
   final Function onAdd, onPrint;
   final Widget? filterWidget, datePicker;
-  Appbar({required this.title, required this.onchange, this.isBook = false, this.isReservation = false, this.filterWidget, this.datePicker,  this.hasAddButton = false, this.selected, required this.onAdd, required this.onPrint});
+  Appbar({required this.title, required this.onchange, this.isBook = false, this.isReservation = false, this.filterWidget, this.datePicker,  this.hasAddButton = false, this.hasPrinting = true, this.hasSearch = true, this.selected, required this.onAdd, required this.onPrint});
   @override
   State<Appbar> createState() => _AppbarState();
 }
@@ -183,15 +183,17 @@ class _AppbarState extends State<Appbar> {
                   width: 20,
                 ),
                 widget.filterWidget ?? SizedBox(),
-                SizedBox(
-                  width: 20,
-                ),
-                IconButton(
-                  icon: Icon(Icons.print, size: 27, color: colors.umber,),
-                  onPressed: (){
-                    widget.onPrint();
-                  },
-                ),
+                if(widget.hasPrinting)...{
+                  SizedBox(
+                    width: 20,
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.print, size: 27, color: colors.umber,),
+                    onPressed: (){
+                      widget.onPrint();
+                    },
+                  ),
+                },
                 SizedBox(
                   width: 15,
                 ),
@@ -215,34 +217,36 @@ class _AppbarState extends State<Appbar> {
                     );
                   }
                 ),
-                SizedBox(
-                  width: 20,
-                ),
-                SizedBox(
-                  width: 350,
-                  child: TextField(
-                    style: TextStyle(fontFamily: "OpenSans"),
-                    decoration: InputDecoration(
-                      hintText: 'Search...',
-                      prefixIcon: Icon(Icons.search),
-                      hintStyle: TextStyle(fontFamily: "OpenSans"),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(1000)
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(1000),
-                        borderSide: BorderSide(color: colors.umber.withOpacity(0.1)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(1000),
-                        borderSide: BorderSide(color: colors.umber.withOpacity(0.4)),
-                      ),
-                    ),
-                    onChanged: (text) {
-                      widget.onchange(text);
-                    },
+                if(widget.hasSearch)...{
+                  SizedBox(
+                    width: 20,
                   ),
-                ),
+                  SizedBox(
+                    width: 350,
+                    child: TextField(
+                      style: TextStyle(fontFamily: "OpenSans"),
+                      decoration: InputDecoration(
+                        hintText: 'Search...',
+                        prefixIcon: Icon(Icons.search),
+                        hintStyle: TextStyle(fontFamily: "OpenSans"),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(1000)
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(1000),
+                          borderSide: BorderSide(color: colors.umber.withOpacity(0.1)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(1000),
+                          borderSide: BorderSide(color: colors.umber.withOpacity(0.4)),
+                        ),
+                      ),
+                      onChanged: (text) {
+                        widget.onchange(text);
+                      },
+                    ),
+                  ),
+                },
                 SizedBox(
                   width: 20,
                 ),

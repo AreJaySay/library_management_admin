@@ -60,7 +60,6 @@ class _MyHomePageState extends State<MyHomePage> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       Future.delayed(Duration(seconds: 5), ()async {
         List _admin = adminModel.value.where((s) => s["email"] == prefs.getString('email') && converterModels.hexToString(s["pass"]) == prefs.getString('pass')).toList();
-        print("GET LOGGED USER ${_admin}");
         if(_admin.isNotEmpty){
           usersModel.updateUser(data: _admin.first);
           _routes.navigator_pushreplacement(context, Landing());

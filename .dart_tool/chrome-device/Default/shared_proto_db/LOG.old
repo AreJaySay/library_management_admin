@@ -1,12 +1,16 @@
-2026/01/27-21:15:59.126 15862c Reusing MANIFEST /private/var/folders/hh/f3zvdxmx0pvgmmq1f355wlx40000gn/T/flutter_tools.TmSAYz/flutter_tools_chrome_device.zZ5L8R/Default/shared_proto_db/MANIFEST-000001
-2026/01/27-21:15:59.127 15862c Recovering log #18
-2026/01/27-21:15:59.128 15862c Reusing old log /private/var/folders/hh/f3zvdxmx0pvgmmq1f355wlx40000gn/T/flutter_tools.TmSAYz/flutter_tools_chrome_device.zZ5L8R/Default/shared_proto_db/000018.log 
-2026/01/27-21:15:59.128 15862c Delete type=0 #7
-2026/01/27-21:15:59.128 15862c Delete type=0 #12
-2026/01/27-21:15:59.128 15862c Delete type=0 #4
-2026/01/27-21:15:59.128 15862c Delete type=0 #15
-2026/01/27-21:15:59.128 15862c Delete type=0 #3
-2026/01/27-21:15:59.128 15862c Delete type=2 #16
-2026/01/27-21:15:59.129 15862c Delete type=2 #13
-2026/01/27-21:15:59.129 15862c Delete type=2 #11
-2026/01/27-21:15:59.129 15862c Delete type=2 #8
+2026/02/11-19:48:26.453 10abbb Reusing MANIFEST /private/var/folders/hh/f3zvdxmx0pvgmmq1f355wlx40000gn/T/flutter_tools.40yxQZ/flutter_tools_chrome_device.FZUtFB/Default/shared_proto_db/MANIFEST-000001
+2026/02/11-19:48:26.453 10abbb Recovering log #22
+2026/02/11-19:48:26.455 10abbb Reusing old log /private/var/folders/hh/f3zvdxmx0pvgmmq1f355wlx40000gn/T/flutter_tools.40yxQZ/flutter_tools_chrome_device.FZUtFB/Default/shared_proto_db/000022.log 
+2026/02/11-19:48:26.455 10abbb Delete type=0 #7
+2026/02/11-19:48:26.455 10abbb Delete type=0 #12
+2026/02/11-19:48:26.455 10abbb Delete type=0 #4
+2026/02/11-19:48:26.455 10abbb Delete type=0 #15
+2026/02/11-19:48:26.455 10abbb Delete type=0 #3
+2026/02/11-19:48:26.455 10abbb Delete type=2 #16
+2026/02/11-19:48:26.455 10abbb Delete type=2 #13
+2026/02/11-19:48:26.455 10abbb Delete type=2 #11
+2026/02/11-19:48:26.455 10abbb Delete type=2 #8
+2026/02/11-19:48:26.455 10abbb Delete type=0 #18
+2026/02/11-19:48:41.820 10abbd Level-0 table #26: started
+2026/02/11-19:48:41.821 10abbd Level-0 table #26: 122878 bytes OK
+2026/02/11-19:48:41.824 10abbd Delete type=0 #22

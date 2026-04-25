@@ -8,10 +8,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:library_book/models/image_base64.dart';
+import 'package:library_book/screens/books/components/create_qr_code.dart';
 import 'package:library_book/screens/notifications/notifications.dart';
 import 'package:library_book/screens/widgets/button.dart';
 import 'package:library_book/services/apis/books.dart';
 import 'package:library_book/services/apis/notifications.dart';
+import 'package:library_book/services/routes.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../../functions/loaders.dart';
 import '../../../utils/palettes/app_colors.dart' hide Colors;
@@ -29,6 +31,7 @@ class AddBook extends StatefulWidget {
 
 class _AddBookState extends State<AddBook> {
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
+  final Routes _routes = new Routes();
   final SnackbarMessage _snackbarMessage = new SnackbarMessage();
   final NotificationApis _notificationApis = new NotificationApis();
   final FirebaseStorage _storage = FirebaseStorage.instance;
@@ -43,6 +46,7 @@ class _AddBookState extends State<AddBook> {
   final TextEditingController _pagesNumber = TextEditingController();
   final TextEditingController _isbn = TextEditingController();
   final TextEditingController _stock = TextEditingController();
+  final TextEditingController _year = TextEditingController();
   final TextEditingController _shellNumber = TextEditingController();
   final TextEditingController _desc = TextEditingController();
   List<TextEditingController> _categories = [];
@@ -80,6 +84,7 @@ class _AddBookState extends State<AddBook> {
       _stock.text = widget.details!["stock"];
       _shellNumber.text = widget.details!["shell_number"];
       _desc.text = widget.details!["summary"];
+      _year.text = widget.details!["year"];
       _base64 = widget.details!["base64Image"];
       _pickedImageBytes = widget.details!["base64Image"] == "" ? null : base64Decode(widget.details!["base64Image"]);
       if(widget.details!["categories"].isNotEmpty){
@@ -162,6 +167,32 @@ class _AddBookState extends State<AddBook> {
               SizedBox(
                 height: 50,
               ),
+              TextField(
+                controller: _title,
+                style: TextStyle(fontFamily: "OpenSans"),
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                  hintText: 'Title',
+                  hintStyle: TextStyle(fontFamily: "OpenSans",color: Colors.grey),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(1000)
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(1000),
+                    borderSide: BorderSide(color: colors.umber.withOpacity(0.1)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(1000),
+                    borderSide: BorderSide(color: colors.umber.withOpacity(0.4)),
+                  ),
+                ),
+                onChanged: (text) {
+
+                },
+              ),
+              SizedBox(
+                height: 15,
+              ),
               Row(
                 children: [
                   Expanded(
@@ -226,11 +257,11 @@ class _AddBookState extends State<AddBook> {
                 children: [
                   Expanded(
                     child:  TextField(
-                      controller: _title,
+                      controller: _year,
                       style: TextStyle(fontFamily: "OpenSans"),
-                      keyboardType: TextInputType.text,
+                      keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        hintText: 'Title',
+                        hintText: 'Published year',
                         hintStyle: TextStyle(fontFamily: "OpenSans",color: Colors.grey),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(1000)
@@ -557,18 +588,20 @@ class _AddBookState extends State<AddBook> {
                     "subject": _subject.text,
                     "title": _title.text,
                     "author": _author.text,
+                    "year": _year.text,
                     "publisher": _publisher.text,
                     "copyright": _copyright.text,
                     "edition_number": _editionNumber.text,
                     "pages_number": _pagesNumber.text,
                     "isbn": _isbn.text,
                     "stock": _stock.text,
+                    "overall_stock": _stock.text,
                     "shell_number": _shellNumber.text,
                     "summary": _desc.text,
                     "categories": _finalCategories,
                     "base64Image": _base64,
                   };
-                  // _screenLoaders.functionLoader(context);
+                  _screenLoaders.functionLoader(context);
                   if(widget.details != null){
                     _booksApi.edit(old_isbn: widget.details!["isbn"], payload: _payload).whenComplete((){
                       Navigator.of(context).pop(null);
@@ -577,10 +610,13 @@ class _AddBookState extends State<AddBook> {
                   }else{
                     print(_payload);
                     _booksApi.add(payload: _payload).whenComplete((){
-                      Navigator.of(context).pop(null);
-                      Navigator.of(context).pop(null);
                       _notificationApis.add(payload: _payload, type: "book_added", content: "New book added on the list, check it out now!");
                       _snackbarMessage.snackbarMessage(context, message: "New book successfully created!");
+                      Navigator.of(context).pop(null);
+                      showDialog(
+                        context: context,
+                        builder: (context) => CreateQrCode(isbn: _isbn.text, title: _title.text,),
+                      );
                     });
                   }
                 }

@@ -14,7 +14,6 @@ class UsersApi{
           if (data is Map) {
             usersModel.update(data: data.values.toList());
             usersModel.updateSearch(data: data.values.toList());
-            print("USERS ${data.values.toList()}");
           } else if (data is List) {
             usersModel.update(data: data);
             usersModel.updateSearch(data: data);
@@ -25,14 +24,6 @@ class UsersApi{
         }
     });
   }
-  // "name": _name.text,
-  // "age": _age.text,
-  // "email": _email.text,
-  // "school_id": _schoolid.text,
-  // "department": _department,
-  // "year": _year,
-  // "section": _section,
-  // "base64Image": _base64,
 
   // EDIT
   Future edit({required String id,required Map payload})async{

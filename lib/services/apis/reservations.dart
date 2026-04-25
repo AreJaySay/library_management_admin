@@ -48,7 +48,6 @@ class ReservationApis{
         final data = dataSnapshot.value;
         if (data is Map) {
           reservationModel.update(data: data.values.toList());
-          print("RESERVATIONS ${data.values.toList()}");
         } else if (data is List) {
           reservationModel.update(data: data);
         }

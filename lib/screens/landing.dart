@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:library_book/models/notifications.dart';
 import 'package:library_book/models/page_navigators.dart';
 import 'package:library_book/screens/books/books.dart';
+import 'package:library_book/screens/inventory/inventory.dart';
 import 'package:library_book/screens/logbooks/logbooks.dart';
 import 'package:library_book/screens/notifications/notifications.dart';
 import 'package:library_book/screens/users/users.dart';
@@ -20,9 +21,9 @@ class Landing extends StatefulWidget {
 class _LandingState extends State<Landing> {
   final SideMenuController _sideMenuController = SideMenuController();
   final NotificationApis _notificationApis = new NotificationApis();
-  List<String> _title = ["Students","Logbooks","Books"];
-  List<String> _icons = ["users","logbooks","books"];
-  List<Widget> _pages = [Users(),LogBooks(),Books()];
+  List<String> _title = ["Dashboard","Students","Logbooks","Books"];
+  List<String> _icons = ["dashboard","users","logbooks","books"];
+  List<Widget> _pages = [Inventory(),Users(),LogBooks(),Books()];
   int _selected = 0;
   bool _isCollapsed = false;
 
@@ -107,7 +108,9 @@ class _LandingState extends State<Landing> {
           StreamBuilder(
             stream: pageNavigatorsModel.subject,
             builder: (context, snapshot) {
-              return Expanded(
+              return !snapshot.hasData ?
+              CircularProgressIndicator() :
+              Expanded(
                 child: snapshot.data! ?
                 Notifications() :
                 _pages[_selected],
