@@ -104,7 +104,7 @@ class _FilterState extends State<Filter> {
                   }).toList(),
                   hint: Text(_selected == null
                       ? 'Select department'
-                      : "Grade ${_selected!["department"]}",style: TextStyle(fontFamily: "OpenSans",fontSize: 16, color: _selected == null ? Colors.grey : Colors.black),),
+                      : "${_selected!["department"]}",style: TextStyle(fontFamily: "OpenSans",fontSize: 16, color: _selected == null ? Colors.grey : Colors.black),),
                   borderRadius: BorderRadius.circular(10),
                   underline: SizedBox(),
                   isExpanded: true,

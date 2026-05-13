@@ -17,7 +17,9 @@ class _TableLoaderState extends State<TableLoader> {
       scrollDirection: Axis.vertical,
       controller: _scrollController,
       child: Table(
-        border: TableBorder.all(color: colors.umber.withOpacity(0.1)),
+        border: TableBorder(
+          horizontalInside: BorderSide(color: Colors.grey.shade300, width: 1),
+        ),
         columnWidths: const <int, TableColumnWidth>{
           0: FixedColumnWidth(150),
           1: FixedColumnWidth(150),

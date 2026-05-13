@@ -99,8 +99,15 @@ class _LogBooksState extends State<LogBooks> {
                                   ),
                                   content: Filter(
                                     onConfirm: (v) {
-                                      List _res = attendanceModel.valueSearch.where((s) => s.last["department"] == v["department"] && s.last["course"] == v["selected_section"]).toList();
-                                      attendanceModel.update(data: _res);
+                                      // List _attendances = [];
+                                      // List _user = usersModel.value.where((s) => s["department"] == v["department"] && s["course"] == v["selected_section"]).toList();
+                                      // for(int x = 0; x < _user.length; x++){
+                                      //   if(attendanceModel.valueSearch.first.where((s) => s["name"] == _user[x]["firstname"]).toList().isNotEmpty){
+                                      //     _attendances.add(attendanceModel.valueSearch.first.where((s) => s["name"] == _user[x]["firstname"]).toList());
+                                      //   }
+                                      // }
+                                      // attendanceModel.update(data: _attendances);
+                                      print(attendanceModel.valueSearch.first);
                                     },
                                   )
                               )
@@ -155,56 +162,74 @@ class _LogBooksState extends State<LogBooks> {
                       scrollDirection: Axis.vertical,
                       controller: _scrollController,
                       child: Table(
-                        border: TableBorder.all(color: colors.umber.withOpacity(0.1)),
+                        border: TableBorder(
+                          horizontalInside: BorderSide(color: Colors.grey.shade300, width: 1),
+                        ),
                         columnWidths: const <int, TableColumnWidth>{
                           0: FixedColumnWidth(100),
-                          1: FlexColumnWidth(),
-                          2: FixedColumnWidth(100),
-                          3: FlexColumnWidth(),
-                          4: FlexColumnWidth(),
-                          5: FixedColumnWidth(150),
+                          1: FixedColumnWidth(100),
+                          2: FixedColumnWidth(150),
+                          3: FixedColumnWidth(150),
+                          4: FixedColumnWidth(200),
+                          5: FlexColumnWidth(),
                           6: FixedColumnWidth(150),
-                          7: FixedColumnWidth(200),
-                          8: FixedColumnWidth(200),
+                          7: FixedColumnWidth(150),
+                          8: FixedColumnWidth(170),
+                          9: FixedColumnWidth(170),
                         },
                         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
                         children: <TableRow>[
                           TableRow(
                             children: <Widget>[
+                              TableCell(child: Center(child: Text('Photo',
+                                  style: TextStyle(
+                                      fontFamily: "Roboto_normal",
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15)))),
                               TableCell(child: Padding(
-                                padding: EdgeInsetsGeometry.symmetric(vertical: 10),
-                                child: Center(child: Text('ID',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold),)),
+                                padding: EdgeInsetsGeometry.symmetric(
+                                    vertical: 10),
+                                child: Center(child: Text('ID',
+                                  style: TextStyle(
+                                      fontFamily: "Roboto_normal",
+                                      fontWeight: FontWeight.bold),)),
                               )),
-                              TableCell(child: Center(child: Text('Name',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                              TableCell(child: Center(child: Text('Age',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                              TableCell(child: Center(child: Text('School ID',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                              TableCell(child: Center(child: Text('Department',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                              TableCell(child: Center(child: Text('Year',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
-                              TableCell(child: Center(child: Text('Section',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
+                              TableCell(child: Center(child: Text('First name',
+                                  style: TextStyle(
+                                      fontFamily: "Roboto_normal",
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15)))),
+                              TableCell(child: Center(child: Text('Last name',
+                                  style: TextStyle(
+                                      fontFamily: "Roboto_normal",
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15)))),
+                              TableCell(child: Center(child: Text('Email',
+                                  style: TextStyle(
+                                      fontFamily: "Roboto_normal",
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15)))),
+                              TableCell(child: Center(child: Text('Phone',
+                                  style: TextStyle(
+                                      fontFamily: "Roboto_normal",
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15)))),
+                              TableCell(child: Center(child: Text('Year group',
+                                  style: TextStyle(
+                                      fontFamily: "Roboto_normal",
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15)))),
+                              TableCell(child: Center(child: Text('Course',
+                                  style: TextStyle(
+                                      fontFamily: "Roboto_normal",
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15)))),
                               TableCell(child: Center(child: Text('Log In',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
                               TableCell(child: Center(child: Text('Log Out',style: TextStyle(fontFamily: "Roboto_normal",fontWeight: FontWeight.bold,fontSize: 15)))),
                             ],
                           ),
                           for(int x = 0; x < snapshot.data!.length; x++)...{
-                            TableRow(
-                              decoration: BoxDecoration(
-                                  color: Colors.white
-                              ),
-                              children: <Widget>[
-                                TableCell(child: Padding(
-                                  padding: EdgeInsetsGeometry.symmetric(vertical: 10),
-                                  child: Center(child: Text('${x+1}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,)),
-                                )),
-                                TableCell(child: Center(child: Text('${snapshot.data![x].last["name"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                                TableCell(child: Center(child: Text('${snapshot.data![x].last["age"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                                TableCell(child: Center(child: Text('${snapshot.data![x].last["school_id"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                                TableCell(child: Center(child: Text('${snapshot.data![x].last["department"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                                TableCell(child: Center(child: Text('${snapshot.data![x].last["year"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                                TableCell(child: Center(child: Text('${snapshot.data![x].last["section"]}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                                TableCell(child: Center(child: Text('${DateFormat("dd MMM yyyy h:mm").format(DateTime.parse(snapshot.data![x].first["date_time"]))}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                                TableCell(child: Center(child: Text('${DateFormat("dd MMM yyyy h:mm").format(DateTime.parse(snapshot.data![x][1]["date_time"]))}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
-                              ],
-                            ),
+                            _tableRow(details: snapshot.data![x])
                           }
                         ],
                       ),
@@ -218,32 +243,115 @@ class _LogBooksState extends State<LogBooks> {
     );
   }
 
+  TableRow _tableRow({required List details}){
+    List _user = usersModel.value.where((s) => s["firstname"] == details.first["name"]).toList();
+
+    return TableRow(
+      decoration: BoxDecoration(
+          color: Colors.white
+      ),
+      children: <Widget>[
+        TableCell(
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Center(
+                child: _user.isEmpty ?
+                SizedBox() :
+                _user.first["base64Image"] != "" && _user.first["base64Image"] != null ?
+                Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(1000),
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: MemoryImage(
+                                base64Decode(_user.first["base64Image"]))
+                        )
+                    )):
+                Center(child: CircleAvatar(
+                    backgroundImage: NetworkImage(
+                        "https://cdn-icons-png.freepik.com/512/8742/8742495.png")
+                ))
+            ),
+          ),
+        ),
+        TableCell(child: Padding(
+          padding: EdgeInsetsGeometry.symmetric(
+              vertical: 10),
+          child: Center(child: Text(
+              _user.isEmpty ? "" : '${_user.first["id"]}',
+              style: TextStyle(
+                  fontFamily: "Roboto_normal"))),
+        )),
+        TableCell(child: Center(child: Text(
+          _user.isEmpty ? "" : '${_user.first["firstname"]}',
+          style: TextStyle(
+              fontFamily: "Roboto_normal"),
+          textAlign: TextAlign.center,))),
+        TableCell(child: Center(child: Text(
+          _user.isEmpty ? "" : '${_user.first["lastname"]}',
+          style: TextStyle(
+              fontFamily: "Roboto_normal"),
+          textAlign: TextAlign.center,))),
+        TableCell(child: Center(child: Text(
+          _user.isEmpty ? "" : '${_user.first["email"]}',
+          style: TextStyle(
+              fontFamily: "Roboto_normal"),
+          textAlign: TextAlign.center,))),
+        TableCell(child: Center(child: Text(
+          _user.isEmpty ? "" : '${_user.first["phone"]}',
+          style: TextStyle(
+              fontFamily: "Roboto_normal"),
+          textAlign: TextAlign.center,))),
+        TableCell(child: Center(child: Text(
+          _user.isEmpty ? "" : '${_user.first["year"]}',
+          style: TextStyle(
+              fontFamily: "Roboto_normal"),
+          textAlign: TextAlign.center,))),
+        TableCell(child: Center(child: Text(
+          _user.isEmpty ? "" : '${_user.first["course"]}',
+          style: TextStyle(
+              fontFamily: "Roboto_normal"),
+          textAlign: TextAlign.center,))),
+        TableCell(child: Center(child: Text(_user.isEmpty ? "" : '${DateFormat("dd MMM yyyy h:mm").format(DateTime.parse(details.first["date_time"]))}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+        TableCell(child: Center(child: Text(_user.isEmpty ? "" : '${DateFormat("dd MMM yyyy h:mm").format(DateTime.parse(details[1]["date_time"]))}',style: TextStyle(fontFamily: "Roboto_normal"),textAlign: TextAlign.center,))),
+      ],
+    );
+  }
+
   Future _createExcel({required List datas}) async {
     final excel = Excel.createExcel();
     final sheet = excel['Logbooks'];
     sheet.appendRow([
       TextCellValue("ID"),
-      TextCellValue("Name"),
-      TextCellValue("Age"),
-      TextCellValue("School ID"),
-      TextCellValue("Department"),
+      TextCellValue("Firstname"),
+      TextCellValue("Lastname"),
+      TextCellValue("School Id"),
+      TextCellValue("Email"),
+      TextCellValue("Phone"),
       TextCellValue("Year"),
-      TextCellValue("Section"),
+      TextCellValue("Department"),
+      TextCellValue("Course"),
       TextCellValue("Log In"),
       TextCellValue("Log Out"),
     ]);
     for(int x = 0; x < datas.length; x++){
-      sheet.appendRow([
-        TextCellValue("${x+1}"),
-        TextCellValue("${usersModel.value.where((s) => s["school_id"] == datas[x].first["school_id"]).toList().first["name"]}"),
-        TextCellValue("${usersModel.value.where((s) => s["school_id"] == datas[x].first["school_id"]).toList().first["age"]}"),
-        TextCellValue("${usersModel.value.where((s) => s["school_id"] == datas[x].first["school_id"]).toList().first["school_id"]}"),
-        TextCellValue("${usersModel.value.where((s) => s["school_id"] == datas[x].first["school_id"]).toList().first["department"]}"),
-        TextCellValue("${usersModel.value.where((s) => s["school_id"] == datas[x].first["school_id"]).toList().first["year"]}"),
-        TextCellValue("${usersModel.value.where((s) => s["school_id"] == datas[x].first["school_id"]).toList().first["section"]}"),
-        TextCellValue("${datas[x].first["date_time"] == null ? "--" : DateFormat("dd MMM yyyy h:mm").format(DateTime.parse(datas[x].first["date_time"]))}"),
-        TextCellValue("${datas[x].last["date_time"] == null ? "--" : DateFormat("dd MMM yyyy h:mm").format(DateTime.parse(datas[x].last["date_time"]))}"),
-      ]);
+      if(usersModel.value.where((s) => s["firstname"] == datas[x].first["name"]).toList().isNotEmpty){
+        sheet.appendRow([
+          TextCellValue("${x+1}"),
+          TextCellValue("${usersModel.value.where((s) => s["firstname"] == datas[x].first["name"]).toList().first["firstname"]}"),
+          TextCellValue("${usersModel.value.where((s) => s["firstname"] == datas[x].first["name"]).toList().first["lastname"]}"),
+          TextCellValue("${usersModel.value.where((s) => s["firstname"] == datas[x].first["name"]).toList().first["id"]}"),
+          TextCellValue("${usersModel.value.where((s) => s["firstname"] == datas[x].first["name"]).toList().first["email"]}"),
+          TextCellValue("${usersModel.value.where((s) => s["firstname"] == datas[x].first["name"]).toList().first["phone"]}"),
+          TextCellValue("${usersModel.value.where((s) => s["firstname"] == datas[x].first["name"]).toList().first["year"]}"),
+          TextCellValue("${usersModel.value.where((s) => s["firstname"] == datas[x].first["name"]).toList().first["department"]}"),
+          TextCellValue("${usersModel.value.where((s) => s["firstname"] == datas[x].first["name"]).toList().first["course"]}"),
+          TextCellValue("${datas[x].first["date_time"] == null ? "--" : DateFormat("dd MMM yyyy h:mm").format(DateTime.parse(datas[x].first["date_time"]))}"),
+          TextCellValue("${datas[x][1]["date_time"] == null ? "--" : DateFormat("dd MMM yyyy h:mm").format(DateTime.parse(datas[x][1]["date_time"]))}"),
+        ]);
+      }
     }
 
     final fileBytes = excel.encode()!;

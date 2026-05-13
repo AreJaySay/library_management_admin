@@ -31,13 +31,13 @@ class UsersApi{
     FirebaseDatabase.instance.ref().child('users').orderByChild("id").equalTo(id).onChildAdded.forEach((event)async{
       await usersRef.update({
         "${event.snapshot.key!}/id": payload["id"],
-        "${event.snapshot.key!}/name": payload["name"],
-        "${event.snapshot.key!}/age": payload["age"],
+        "${event.snapshot.key!}/firstname": payload["firstname"],
+        "${event.snapshot.key!}/lastname": payload["lastname"],
+        "${event.snapshot.key!}/phone": payload["phone"],
         "${event.snapshot.key!}/email": payload["email"],
-        "${event.snapshot.key!}/school_id": payload["school_id"],
-        "${event.snapshot.key!}/department": payload["department"],
         "${event.snapshot.key!}/year": payload["year"],
-        "${event.snapshot.key!}/section": payload["section"],
+        "${event.snapshot.key!}/department": payload["department"],
+        "${event.snapshot.key!}/course": payload["course"],
         "${event.snapshot.key!}/base64Image": payload["base64Image"],
         "${event.snapshot.key!}/password": payload["password"],
       });

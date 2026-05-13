@@ -148,27 +148,31 @@ class _UsersState extends State<Users> {
                         scrollDirection: Axis.vertical,
                         controller: _scrollController,
                         child: Table(
-                          border: TableBorder.all(color: colors.umber
-                              .withOpacity(0.1)),
+                          border: TableBorder(
+                            horizontalInside: BorderSide(color: Colors.grey.shade300, width: 1),
+                          ),
                           columnWidths: const <int, TableColumnWidth>{
-                            0: FixedColumnWidth(70),
-                            1: FixedColumnWidth(100),
+                            0: FixedColumnWidth(150),
+                            1: FixedColumnWidth(150),
                             2: FlexColumnWidth(),
-                            3: FixedColumnWidth(100),
-                            4: FlexColumnWidth(),
-                            5: FixedColumnWidth(100),
-                            6: FlexColumnWidth(),
-                            7: FlexColumnWidth(),
-                            8: FixedColumnWidth(100),
+                            3: FlexColumnWidth(),
+                            4: FixedColumnWidth(200),
+                            5: FixedColumnWidth(200),
+                            6: FixedColumnWidth(100),
+                            7: FixedColumnWidth(150),
+                            8: FixedColumnWidth(150),
                             9: FixedColumnWidth(100),
-                            10: FixedColumnWidth(100),
-                            11: FixedColumnWidth(80),
                           },
                           defaultVerticalAlignment: TableCellVerticalAlignment
                               .middle,
                           children: <TableRow>[
                             TableRow(
                               children: <Widget>[
+                                TableCell(child: Center(child: Text('Photo',
+                                    style: TextStyle(
+                                        fontFamily: "Roboto_normal",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15)))),
                                 TableCell(child: Padding(
                                   padding: EdgeInsetsGeometry.symmetric(
                                       vertical: 10),
@@ -177,47 +181,37 @@ class _UsersState extends State<Users> {
                                         fontFamily: "Roboto_normal",
                                         fontWeight: FontWeight.bold),)),
                                 )),
-                                TableCell(child: Center(child: Text('Photo',
+                                TableCell(child: Center(child: Text('First name',
                                     style: TextStyle(
                                         fontFamily: "Roboto_normal",
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15)))),
-                                TableCell(child: Center(child: Text('Name',
+                                TableCell(child: Center(child: Text('Last name',
                                     style: TextStyle(
                                         fontFamily: "Roboto_normal",
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15)))),
-                                TableCell(child: Center(child: Text('Age',
+                                TableCell(child: Center(child: Text('Email',
                                     style: TextStyle(
-                                        fontFamily: "Roboto_normal",
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15)))),
-                                TableCell(child: Center(child: Text(
-                                    'Email address', style: TextStyle(
                                     fontFamily: "Roboto_normal",
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15)))),
-                                TableCell(child: Center(child: Text('School ID',
+                                TableCell(child: Center(child: Text('Phone',
                                     style: TextStyle(
                                         fontFamily: "Roboto_normal",
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15)))),
-                                TableCell(child: Center(child: Text(
-                                    'Department', style: TextStyle(
-                                    fontFamily: "Roboto_normal",
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15)))),
-                                TableCell(child: Center(child: Text(
-                                    'Course', style: TextStyle(
-                                    fontFamily: "Roboto_normal",
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15)))),
-                                TableCell(child: Center(child: Text('Year',
+                                TableCell(child: Center(child: Text('Year group',
                                     style: TextStyle(
                                         fontFamily: "Roboto_normal",
                                         fontWeight: FontWeight.bold,
                                         fontSize: 15)))),
-                                TableCell(child: Center(child: Text('Section',
+                                TableCell(child: Center(child: Text('Department',
+                                    style: TextStyle(
+                                        fontFamily: "Roboto_normal",
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15)))),
+                                TableCell(child: Center(child: Text('Course',
                                     style: TextStyle(
                                         fontFamily: "Roboto_normal",
                                         fontWeight: FontWeight.bold,
@@ -235,13 +229,6 @@ class _UsersState extends State<Users> {
                                     color: Colors.white
                                 ),
                                 children: <Widget>[
-                                  TableCell(child: Padding(
-                                    padding: EdgeInsetsGeometry.symmetric(
-                                        vertical: 10),
-                                    child: Center(child: Text('${x + 1}',
-                                        style: TextStyle(
-                                            fontFamily: "Roboto_normal"))),
-                                  )),
                                   TableCell(
                                     child: Padding(
                                       padding: const EdgeInsets.all(5.0),
@@ -252,6 +239,7 @@ class _UsersState extends State<Users> {
                                               width: 40,
                                               height: 40,
                                               decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(1000),
                                                   image: DecorationImage(
                                                       fit: BoxFit.cover,
                                                       image: MemoryImage(
@@ -266,13 +254,20 @@ class _UsersState extends State<Users> {
                                       ),
                                     ),
                                   ),
+                                  TableCell(child: Padding(
+                                    padding: EdgeInsetsGeometry.symmetric(
+                                        vertical: 10),
+                                    child: Center(child: Text('${snapshot.data![x]["id"]}',
+                                        style: TextStyle(
+                                            fontFamily: "Roboto_normal"))),
+                                  )),
                                   TableCell(child: Center(child: Text(
-                                    '${snapshot.data![x]["name"]}',
+                                    '${snapshot.data![x]["firstname"]}',
                                     style: TextStyle(
                                         fontFamily: "Roboto_normal"),
                                     textAlign: TextAlign.center,))),
                                   TableCell(child: Center(child: Text(
-                                    '${snapshot.data![x]["age"]}',
+                                    '${snapshot.data![x]["lastname"]}',
                                     style: TextStyle(
                                         fontFamily: "Roboto_normal"),
                                     textAlign: TextAlign.center,))),
@@ -282,7 +277,12 @@ class _UsersState extends State<Users> {
                                         fontFamily: "Roboto_normal"),
                                     textAlign: TextAlign.center,))),
                                   TableCell(child: Center(child: Text(
-                                    '${snapshot.data![x]["school_id"]}',
+                                    '${snapshot.data![x]["phone"]}',
+                                    style: TextStyle(
+                                        fontFamily: "Roboto_normal"),
+                                    textAlign: TextAlign.center,))),
+                                  TableCell(child: Center(child: Text(
+                                    '${snapshot.data![x]["year"]}',
                                     style: TextStyle(
                                         fontFamily: "Roboto_normal"),
                                     textAlign: TextAlign.center,))),
@@ -293,16 +293,6 @@ class _UsersState extends State<Users> {
                                     textAlign: TextAlign.center,))),
                                   TableCell(child: Center(child: Text(
                                     '${snapshot.data![x]["course"]}',
-                                    style: TextStyle(
-                                        fontFamily: "Roboto_normal"),
-                                    textAlign: TextAlign.center,))),
-                                  TableCell(child: Center(child: Text(
-                                    '${snapshot.data![x]["year"]}',
-                                    style: TextStyle(
-                                        fontFamily: "Roboto_normal"),
-                                    textAlign: TextAlign.center,))),
-                                  TableCell(child: Center(child: Text(
-                                    '${snapshot.data![x]["section"]}',
                                     style: TextStyle(
                                         fontFamily: "Roboto_normal"),
                                     textAlign: TextAlign.center,))),
@@ -385,22 +375,26 @@ class _UsersState extends State<Users> {
     final sheet = excel['Students'];
     sheet.appendRow([
       TextCellValue("ID"),
-      TextCellValue("Name"),
-      TextCellValue("Age"),
-      TextCellValue("School ID"),
-      TextCellValue("Department"),
+      TextCellValue("Firstname"),
+      TextCellValue("Lastname"),
+      TextCellValue("School Id"),
+      TextCellValue("Email"),
+      TextCellValue("Phone"),
       TextCellValue("Year"),
-      TextCellValue("Section"),
+      TextCellValue("Department"),
+      TextCellValue("Course"),
     ]);
     for (int x = 0; x < datas.length; x++) {
       sheet.appendRow([
         TextCellValue("${x + 1}"),
-        TextCellValue("${datas[x]["name"]}"),
-        TextCellValue("${datas[x]["age"]}"),
-        TextCellValue("${datas[x]["school_id"]}"),
-        TextCellValue("${datas[x]["department"]}"),
+        TextCellValue("${datas[x]["firstname"]}"),
+        TextCellValue("${datas[x]["lastname"]}"),
+        TextCellValue("${datas[x]["id"]}"),
+        TextCellValue("${datas[x]["email"]}"),
+        TextCellValue("${datas[x]["phone"]}"),
         TextCellValue("${datas[x]["year"]}"),
-        TextCellValue("${datas[x]["section"]}"),
+        TextCellValue("${datas[x]["department"]}"),
+        TextCellValue("${datas[x]["course"]}"),
       ]);
     }
 

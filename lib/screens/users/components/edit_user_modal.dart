@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:library_book/functions/loaders.dart';
 import 'package:library_book/screens/widgets/button.dart';
 import 'package:library_book/services/apis/users.dart';
@@ -22,15 +23,16 @@ class _EditUserModalState extends State<EditUserModal> {
   final Materialbutton _materialbutton = new Materialbutton();
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   final UsersApi _usersApi = new UsersApi();
-  final TextEditingController _name = TextEditingController();
-  final TextEditingController _age = TextEditingController();
-  final TextEditingController _schoolid = TextEditingController();
+  final TextEditingController _fname = TextEditingController();
+  final TextEditingController _lname = TextEditingController();
+  final TextEditingController _phone = TextEditingController();
   final TextEditingController _email = TextEditingController();
-  String _department = "";
   String _year = "";
-  String _section = "";
+  String _course = "";
+  String _department = "";
   Uint8List? _pickedImageBytes;
   String _base64 = "";
+  List? _filters;
 
   Future<String?> _convertBase64() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
@@ -50,13 +52,12 @@ class _EditUserModalState extends State<EditUserModal> {
   @override
   void initState() {
     // TODO: implement initState
-    _name.text = widget.details["name"];
-    _age.text = "${widget.details["age"]}";
-    _schoolid.text = "${widget.details["school_id"]}";
+    _loadJson();
+    _fname.text = widget.details["firstname"];
+    _lname.text = widget.details["lastname"];
+    _phone.text = "${widget.details["phone"]}";
     _email.text = "${widget.details["email"]}";
-    _department = widget.details["department"];
-    _year = "${widget.details["year"]} year";
-    _section = widget.details["section"];
+    _year = "${widget.details["year"] ?? ""}";
     _base64 = widget.details!["base64Image"];
     _pickedImageBytes = widget.details!["base64Image"] == "" ? null : base64Decode(widget.details!["base64Image"]);
     super.initState();
@@ -65,9 +66,10 @@ class _EditUserModalState extends State<EditUserModal> {
   @override
   void dispose() {
     // TODO: implement dispose
-    _name.dispose();
-    _age.dispose();
-    _schoolid.dispose();
+    _fname.dispose();
+    _lname.dispose();
+    _phone.dispose();
+    _email.dispose();
     super.dispose();
   }
 
@@ -75,7 +77,7 @@ class _EditUserModalState extends State<EditUserModal> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: 550,
-      height: 750,
+      height: 650,
       child: Stack(
         clipBehavior: Clip.none,
         children: <Widget>[
@@ -86,27 +88,26 @@ class _EditUserModalState extends State<EditUserModal> {
                   height: 30,
                 ),
                 Center(
-                  child: CircleAvatar(
-                      minRadius: 50,
-                      maxRadius: 70,
-                      backgroundColor: Colors.grey.shade100,
-                      child: Stack(
-                        children: [
-                          Center(
-                            child: _pickedImageBytes != null ?
-                            Image.memory(
-                              _pickedImageBytes!,
-                              width: 60,
-                              height: 110,
-                              fit: BoxFit.cover,
-                            ) :
-                            Image(
-                              image: NetworkImage("https://cdn-icons-png.freepik.com/512/8742/8742495.png"),
-                              width: 130,
-                              height: 130,
-                            ),
-                          ),
-                          Align(
+                  child: Stack(
+                    children: [
+                      Center(
+                        child: Container(
+                            width: 120,
+                            height: 120,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(1000),
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: _pickedImageBytes != null ?
+                                    MemoryImage(_pickedImageBytes!) : NetworkImage("https://cdn-icons-png.freepik.com/512/8742/8742495.png"),
+                                )
+                            ))
+                      ),
+                      Center(
+                        child: SizedBox(
+                          width: 120,
+                          height: 120,
+                          child: Align(
                               alignment: Alignment.bottomRight,
                               child: GestureDetector(
                                 onTap: () async{
@@ -118,18 +119,19 @@ class _EditUserModalState extends State<EditUserModal> {
                                 ),
                               )
                           ),
-                        ],
-                      )
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 SizedBox(
                   height: 50,
                 ),
                 TextField(
-                  controller: _name,
+                  controller: _fname,
                   style: TextStyle(fontFamily: "OpenSans"),
                   decoration: InputDecoration(
-                    hintText: 'Fullname',
+                    hintText: 'Firstname',
                     prefixIcon: Icon(Icons.person),
                     hintStyle: TextStyle(fontFamily: "OpenSans",color: Colors.grey),
                     border: OutlineInputBorder(
@@ -152,11 +154,37 @@ class _EditUserModalState extends State<EditUserModal> {
                   height: 15,
                 ),
                 TextField(
-                  controller: _age,
+                  controller: _lname,
+                  style: TextStyle(fontFamily: "OpenSans"),
+                  decoration: InputDecoration(
+                    hintText: 'Lastname',
+                    prefixIcon: Icon(Icons.person),
+                    hintStyle: TextStyle(fontFamily: "OpenSans",color: Colors.grey),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(1000)
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(1000),
+                      borderSide: BorderSide(color: colors.umber.withOpacity(0.1)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(1000),
+                      borderSide: BorderSide(color: colors.umber.withOpacity(0.4)),
+                    ),
+                  ),
+                  onChanged: (text) {
+
+                  },
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                TextField(
+                  controller: _phone,
                   style: TextStyle(fontFamily: "OpenSans"),
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    hintText: 'Age',
+                    hintText: 'Phone',
                     prefixIcon: Icon(Icons.calendar_month),
                     hintStyle: TextStyle(fontFamily: "OpenSans",color: Colors.grey),
                     border: OutlineInputBorder(
@@ -174,6 +202,9 @@ class _EditUserModalState extends State<EditUserModal> {
                   onChanged: (text) {
 
                   },
+                ),
+                SizedBox(
+                  height: 15,
                 ),
                 TextField(
                   controller: _email,
@@ -198,85 +229,6 @@ class _EditUserModalState extends State<EditUserModal> {
                   onChanged: (text) {
 
                   },
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                TextField(
-                  controller: _schoolid,
-                  style: TextStyle(fontFamily: "OpenSans"),
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    hintText: 'School ID',
-                    prefixIcon: Icon(Icons.assignment_ind),
-                    hintStyle: TextStyle(fontFamily: "OpenSans",color: Colors.grey),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(1000)
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(1000),
-                      borderSide: BorderSide(color: colors.umber.withOpacity(0.1)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(1000),
-                      borderSide: BorderSide(color: colors.umber.withOpacity(0.4)),
-                    ),
-                  ),
-                  onChanged: (text) {
-
-                  },
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Container(
-                  decoration: ShapeDecoration(
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 1.0, style: BorderStyle.solid, color: colors.umber.withOpacity(0.1)),
-                      borderRadius: BorderRadius.all(Radius.circular(1000)),
-                    ),
-                  ),
-                  child: DropdownButton<String>(
-                    focusColor: Colors.white,
-                    style: TextStyle(fontFamily: "OpenSans",fontSize: 16),
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    items: <String>[
-                      'College of Arts and Science',
-                      'College of Education',
-                      'College of Nursing',
-                      'College of Engineering'
-                    ].map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value,style: TextStyle(fontFamily: "OpenSans",fontSize: 15),),
-                      );
-                    }).toList(),
-                    hint: Row(
-                      children: [
-                        Icon(Icons.apartment),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(_department.isEmpty
-                            ? 'Department'
-                            : _department,style: TextStyle(fontFamily: "OpenSans",fontSize: 16),),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                    underline: SizedBox(),
-                    isExpanded: true,
-                    onChanged: (value) {
-                      if (value != null) {
-                        setState(() {
-                          _department = value;
-                        });
-                      }
-                    },
-                  ),
                 ),
                 SizedBox(
                   height: 15,
@@ -312,7 +264,7 @@ class _EditUserModalState extends State<EditUserModal> {
                         ),
                         Text(_year.isEmpty
                             ? 'Year'
-                            : _year,style: TextStyle(fontFamily: "OpenSans",fontSize: 16),),
+                            : _year,style: TextStyle(fontFamily: "OpenSans",fontSize: 16, color: Colors.black),),
                       ],
                     ),
                     borderRadius: BorderRadius.circular(10),
@@ -340,30 +292,30 @@ class _EditUserModalState extends State<EditUserModal> {
                   ),
                   child: DropdownButton<String>(
                     focusColor: Colors.white,
-                    style: TextStyle(fontFamily: "OpenSans",fontSize: 16),
+                    style: TextStyle(fontFamily: "OpenSans",fontSize: 16,color: Colors.black),
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     items: <String>[
-                      'A',
-                      'B',
-                      'C',
-                      'D',
-                      'E',
+                      for(int x = 0; x < _filters!.length; x++)...{
+                        "${_filters![x]["department"]}"
+                      }
                     ].map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value,style: TextStyle(fontFamily: "OpenSans",fontSize: 15),),
                       );
                     }).toList(),
-                    hint: Row(
-                      children: [
-                        Icon(Icons.abc),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(_section.isEmpty
-                            ? 'Section'
-                            : _section,style: TextStyle(fontFamily: "OpenSans",fontSize: 16),),
-                      ],
+                    hint: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(_department.isEmpty
+                              ? '${widget.details["department"] ?? ""}'
+                              : _department,style: TextStyle(fontFamily: "OpenSans",fontSize: 16,color: Colors.black),),
+                        ],
+                      ),
                     ),
                     borderRadius: BorderRadius.circular(10),
                     underline: SizedBox(),
@@ -371,7 +323,59 @@ class _EditUserModalState extends State<EditUserModal> {
                     onChanged: (value) {
                       if (value != null) {
                         setState(() {
-                          _section = value;
+                          _department = value;
+                        });
+                      }
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  decoration: ShapeDecoration(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(width: 1.0, style: BorderStyle.solid, color: colors.umber.withOpacity(0.1)),
+                      borderRadius: BorderRadius.all(Radius.circular(1000)),
+                    ),
+                  ),
+                  child: DropdownButton<String>(
+                    focusColor: Colors.white,
+                    style: TextStyle(fontFamily: "OpenSans",fontSize: 16,color: Colors.black),
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    items: <String>[
+                      if(_department.isNotEmpty)...{
+                        for(int x = 0; x < _filters!.where((s) => s["department"] == _department).toList().first["courses"].length; x++)...{
+                          "${_filters!.where((s) => s["department"] == _department).toList().first["courses"][x]}"
+                        }
+                      }
+                    ].map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value,style: TextStyle(fontFamily: "OpenSans",fontSize: 15),),
+                      );
+                    }).toList(),
+                    hint: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(_course.isEmpty
+                              ? '${widget.details["course"] ?? ""}'
+                              : _course,style: TextStyle(fontFamily: "OpenSans",fontSize: 16,color: Colors.black),),
+                        ],
+                      ),
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                    underline: SizedBox(),
+                    isExpanded: true,
+                    onChanged: (value) {
+                      if (value != null) {
+                        setState(() {
+                          _course = value;
                         });
                       }
                     },
@@ -381,18 +385,18 @@ class _EditUserModalState extends State<EditUserModal> {
                   height: 50,
                 ),
                 _materialbutton.materialButton("Update", (){
-                  if(_name.text.isEmpty || _age.text.isEmpty || _schoolid.text.isEmpty || _department == "" || _department == "" || _section == ""){
+                  if(_fname.text.isEmpty || _lname.text.isEmpty || _phone.text.isEmpty || _email.text.isEmpty || _year == "" ){
                     _snackbarMessage.snackbarMessage(context, message: "All fields are required.", is_error: true);
                   }else{
                     Map _payload = {
                       "id": "${widget.details["id"]}",
-                      "name": _name.text,
-                      "age": _age.text,
+                      "firstname": _fname.text,
+                      "lastname": _lname.text,
+                      "phone": _phone.text,
                       "email": _email.text,
-                      "school_id": _schoolid.text,
-                      "department": _department,
                       "year": _year,
-                      "section": _section,
+                      "department": _department == "" ? widget.details["department"] ?? "" : _department,
+                      "course":  _course == "" ? widget.details["course"] ?? "" : _course,
                       "base64Image": _base64,
                       "password": widget.details["password"],
                     };
@@ -427,5 +431,14 @@ class _EditUserModalState extends State<EditUserModal> {
         ],
       ),
     );
+  }
+
+  Future<void> _loadJson() async {
+    final String response = await rootBundle.loadString('assets/jsons/filter_students.json');
+    final data = json.decode(response);
+    setState(() {
+      _filters = data;
+    });
+    print("FILTERS $data");
   }
 }
